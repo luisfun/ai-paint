@@ -93,9 +93,3 @@
   Please be aware that we don’t endorse the products or services advertised on this site. We’re not accountable for the
   content or accuracy of these advertisements.
 </p>
-
-<style>
-  p {
-    line-height: 1.5;
-  }
-</style>

@@ -1,15 +1,84 @@
-<!-- YOU CAN DELETE EVERYTHING IN THIS PAGE -->
+<script lang="ts">
+  import { onMount } from 'svelte'
+	import { ProgressRadial } from '@skeletonlabs/skeleton';
+	import { Turnstile } from 'svelte-turnstile';
+	import { turnstileSiteKey } from '$lib/config';
+  import Svg from '$lib/svelte/Svg.svelte'
+  import AdSense from '$lib/svelte/AdSense.svelte'
 
-<div class="container h-full mx-auto flex justify-center items-center">
-	<div class="space-y-5">
-		<h1 class="h1">Let's get cracking bones!</h1>
-		<p>Start by exploring:</p>
-		<ul>
-			<li><code class="code">/src/routes/+layout.svelte</code> - barebones layout</li>
-			<li><code class="code">/src/app.postcss</code> - app wide css</li>
-			<li>
-				<code class="code">/src/routes/+page.svelte</code> - this page, you can replace the contents
-			</li>
-		</ul>
+  onMount(() => {
+    const url = new URL(window.location.toString())
+    const auth = url.searchParams.get('auth')
+    if (auth) {
+      document.cookie = `shared_auth_key=${auth}; path=/; max-age=${60 * 60 * 24 * 30}`
+      url.searchParams.delete('auth')
+      history.replaceState({}, '', url)
+    }
+  })
+
+  const models = ['dreamshaper-8-lcm', 'stable-diffusion-xl-lightning']
+
+  let prompt = ''
+  let model = models[0]
+  let imageUrl = ''
+  let loading = false
+  let error = 200
+  let adsense = false
+
+  const handleKeyDown = async (event: CustomEvent | KeyboardEvent) => {
+    event = event as KeyboardEvent
+    if (event.key === 'Enter') {
+      await generate()
+    }
+  }
+
+  const generate = async () => {
+    if (loading) return null
+    loading = true
+    const res = await fetch(`/api/t2i?model=${model}&prompt=${prompt}`)
+    error = res.status
+    if (res.ok) imageUrl = URL.createObjectURL(await res.blob())
+    else imageUrl = ''
+    loading = false
+    if (res.headers.get('X-Auth') !== 'true') adsense = true
+  }
+</script>
+
+<form  method="POST" action="/api/t2i">
+	<div class="relative w-[512px] aspect-square max-w-full my-4 mx-auto flex-center">
+		<div class="absolute inset-0 flex-center z-10000 {imageUrl || loading || error !== 200 ? "opacity-0" : ""}">
+			<Turnstile siteKey={turnstileSiteKey} />
+		</div>
+		{#if imageUrl}
+			<img class="max-w-full h-auto {loading ? 'opacity-50' : ''}" src={imageUrl} alt="Generated" />
+		{:else if error !== 200}
+			<div class="flex-center">
+				<b>Error: {error}</b>
+				<p>Please try to generate it again</p>
+			</div>
+		{:else if !loading}
+			<div class="flex-center">
+				<p>Type Prompt and Enter</p>
+				<p>↓</p>
+			</div>
+		{/if}
+		{#if loading}
+			<div class="absolute inset-0 flex-center">
+				<ProgressRadial />
+			</div>
+		{/if}
 	</div>
-</div>
+	<div class="input-group grid-cols-[1fr_auto] my-4 mx-auto">
+		<input type="text" placeholder="Prompt" />
+		<button type="button" class="btn-icon">
+			<Svg icon="paint" />
+		</button>
+	</div>
+</form>
+<AdSense enabled={adsense} />
+
+<style>
+  p {
+    margin: 0.5rem 0;
+  }
+</style>

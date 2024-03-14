@@ -40,7 +40,8 @@
   :global(:root [data-theme='wintry']) {
     --theme-font-family-heading: system-ui;
     --theme-font-color-base: #000;
-    background-image: radial-gradient(at 50% 0%, rgba(var(--color-secondary-500) / 0.18) 0px, transparent 75%), radial-gradient(at 100% 0%, rgba(var(--color-tertiary-500) / 0.18) 0px, transparent 50%);
+    background-image: radial-gradient(at 50% 0%, rgba(var(--color-secondary-500) / 0.18) 0px, transparent 75%),
+      radial-gradient(at 100% 0%, rgba(var(--color-tertiary-500) / 0.18) 0px, transparent 50%);
   }
   :global(h2) {
     font-size: 2rem;
@@ -48,7 +49,7 @@
   }
   :global(h3) {
     font-size: 1.5rem;
-    margin: 1.5rem 0 .75rem;
+    margin: 1.5rem 0 0.75rem;
   }
   :global(a) {
     color: #4693ff;

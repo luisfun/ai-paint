@@ -18,7 +18,7 @@
   const models = ['dreamshaper-8-lcm', 'stable-diffusion-xl-lightning']
 
   let prompt = ''
-  let model = ""
+  let model = models[0]
   let imageUrl = ''
   let loading = false
   let error = 200
@@ -60,7 +60,7 @@
 </div>
 <form class="input-group grid-cols-[1fr_auto] my-4 mx-auto" on:submit={submit}>
   <input type="text" placeholder="Prompt" bind:value={prompt} />
-  <button type="submit" class="input-group-shim bg-inherit">
+  <button type="submit" class="input-group-shim bg-inherit" aria-label="Generate">
     <Svg icon="paint" />
   </button>
 </form>
@@ -72,6 +72,6 @@
     margin: 0.5rem 0;
   }
   .input-group button {
-    padding: .5rem;
+    padding: 0.5rem;
   }
 </style>

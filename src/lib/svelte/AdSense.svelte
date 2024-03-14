@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { adsense } from '$lib/config';
+  import { adsense } from '$lib/config'
 
   export let enabled = false
 

@@ -9,7 +9,10 @@
     <svelte:fragment slot="content">
       <p>
         We use cookies to enhance your experience and show personalized ads. Third-party vendors, including Google, may
-        also use cookies for ad personalization. You can opt out of personalized ads by visiting <NewTab href="https://www.google.com/settings/ads" label="Ads Settings">Ads Settings</NewTab> or <NewTab href="http://www.aboutads.info/choices/" label="aboutads">www.aboutads.info</NewTab>.
+        also use cookies for ad personalization. You can opt out of personalized ads by visiting <NewTab
+          href="https://www.google.com/settings/ads"
+          label="Ads Settings">Ads Settings</NewTab
+        > or <NewTab href="http://www.aboutads.info/choices/" label="aboutads">www.aboutads.info</NewTab>.
       </p>
       <p>
         This site gives you tools without any promises about their quality or results. We’re not liable for any issues

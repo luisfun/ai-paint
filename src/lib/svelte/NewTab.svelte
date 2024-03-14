@@ -6,7 +6,7 @@
 </script>
 
 <a
-  class="h-full {display ? "block" : ""} {color ? 'text-inherit' : ''} {display ? 'unset' : ''}"
+  class="h-full {display ? 'block' : ''} {color ? 'text-inherit' : ''} {display ? 'unset' : ''}"
   {href}
   aria-label={label}
   rel="noreferrer noopener"

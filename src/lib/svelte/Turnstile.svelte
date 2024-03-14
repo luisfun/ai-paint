@@ -3,7 +3,7 @@
   import { turnstileSiteKey } from '$lib/config'
 
   export let widgetID: string = 'turnstile_widget'
-  let display: 'block' | 'hidden' = 'hidden'
+  let display: 'flex' | 'hidden' = 'hidden'
 
   onMount(async () => {
     const script = document.createElement('script')
@@ -17,7 +17,7 @@
         // If the original request was challenged...
         if (response.headers.has('cf-mitigated') && response.headers.get('cf-mitigated') === 'challenge') {
           // The request has been challenged...
-          display = 'block'
+          display = 'flex'
           await new Promise((resolve, reject) => {
             // @ts-expect-error turnstile
             turnstile.render('#turnstile_widget', {
@@ -48,6 +48,12 @@
   })
 </script>
 
-<div class="fixed inset-0 bg-[rgba(0, 0, 0, 0.7)] z-10 {display}">
-  <div class="flex flex-nowrap items-center justify-center" id={widgetID}></div>
+<div class="fixed inset-0 z-10 bga-07 justify-center items-center {display}">
+  <div id={widgetID}></div>
 </div>
+
+<style>
+  .bga-07 {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+</style>

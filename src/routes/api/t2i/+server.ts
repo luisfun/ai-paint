@@ -1,7 +1,7 @@
 import type { RequestHandler } from './$types'
 import { Ai } from '@cloudflare/ai'
 
-export const POST = (async ({ request, platform }) => {
+export const GET = (async ({ url, request, platform }) => {
   // shared auth
   const { shared_auth_key } = cookie(request)
   let xAuth = 'false'
@@ -10,9 +10,8 @@ export const POST = (async ({ request, platform }) => {
     if (shared_auth_key === kvKey) xAuth = 'true'
   }
   // main
-  const data = await request.formData()
-  const model = data.get('model')?.toString() || 'dreamshaper-8-lcm'
-  const prompt = data.get('prompt')?.toString() || ''
+  const model = url.searchParams.get('model') || 'stable-diffusion-xl-lightning'
+  const prompt = url.searchParams.get('prompt') || ''
   try {
     const image = await t2i(platform?.env?.AI, model, prompt)
     return new Response(image, {

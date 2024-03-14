@@ -3,8 +3,8 @@
   import { Accordion, AccordionItem } from '@skeletonlabs/skeleton'
 </script>
 
-<Accordion>
-  <AccordionItem>
+<Accordion class="my-8">
+  <AccordionItem class="variant-glass-surface rounded-container-token">
     <svelte:fragment slot="summary">Overview</svelte:fragment>
     <svelte:fragment slot="content">
       <p>
@@ -20,7 +20,7 @@
       </p>
     </svelte:fragment>
   </AccordionItem>
-  <AccordionItem>
+  <AccordionItem class="variant-glass-surface rounded-container-token">
     <svelte:fragment slot="summary">概要</svelte:fragment>
     <svelte:fragment slot="content">
       <p>

@@ -18,7 +18,7 @@
     <slot />
   </main>
 
-  <footer class="flex justify-between items-center text-xs my-4">
+  <footer class="flex justify-between items-center text-xs my-8">
     <a class="text-inherit" href="/privacy">Privacy Policy</a>
     <NewTab color="inherit" href="https://github.com/LuisFun/ai-paint" label="Github">
       <div class="w-4 h-4">
@@ -36,6 +36,19 @@
     :global(html) {
       font-size: large;
     }
+  }
+  :global(:root [data-theme='wintry']) {
+    --theme-font-family-heading: system-ui;
+    --theme-font-color-base: #000;
+    background-image: radial-gradient(at 50% 0%, rgba(var(--color-secondary-500) / 0.18) 0px, transparent 75%), radial-gradient(at 100% 0%, rgba(var(--color-tertiary-500) / 0.18) 0px, transparent 50%);
+  }
+  :global(h2) {
+    font-size: 2rem;
+    margin: 2rem 0 1rem;
+  }
+  :global(h3) {
+    font-size: 1.5rem;
+    margin: 1.5rem 0 .75rem;
   }
   :global(a) {
     color: #4693ff;

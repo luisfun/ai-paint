@@ -18,6 +18,7 @@
   const models = ['dreamshaper-8-lcm', 'stable-diffusion-xl-lightning']
 
   let prompt = ''
+  let model = ""
   let imageUrl = ''
   let loading = false
   let error = 200
@@ -27,9 +28,7 @@
     event.preventDefault()
     if (loading) return null
     loading = true
-    const body = new FormData(event.target as HTMLFormElement)
-    body.append('prompt', prompt)
-    const res = await fetch('/api/t2i', { method: 'POST', body })
+    const res = await fetch(`/api/t2i?model=${model}&prompt=${prompt}`)
     error = res.status
     if (res.ok) imageUrl = URL.createObjectURL(await res.blob())
     else imageUrl = ''
@@ -61,7 +60,7 @@
 </div>
 <form class="input-group grid-cols-[1fr_auto] my-4 mx-auto" on:submit={submit}>
   <input type="text" placeholder="Prompt" bind:value={prompt} />
-  <button type="submit" class="btn-icon">
+  <button type="submit" class="input-group-shim bg-inherit">
     <Svg icon="paint" />
   </button>
 </form>
@@ -71,5 +70,8 @@
 <style>
   p {
     margin: 0.5rem 0;
+  }
+  .input-group button {
+    padding: .5rem;
   }
 </style>

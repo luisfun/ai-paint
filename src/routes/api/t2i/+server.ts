@@ -1,14 +1,7 @@
 import type { RequestHandler } from './$types'
 import { Ai } from '@cloudflare/ai'
-import { verify } from '$lib/ts/verify'
 
 export const POST = (async ({ request, platform }) => {
-  // turnstile
-  const data = await request.formData()
-  const token = data.get('cf-turnstile-response')?.toString()
-  const SECRET_KEY = platform?.env?.TURNSTILE_SECRET
-  const { success, error } = await verify(token, SECRET_KEY)
-  if (!success) return new Response('Invalid CAPTCHA: ' + error)
   // shared auth
   const { shared_auth_key } = cookie(request)
   let xAuth = 'false'
@@ -17,8 +10,9 @@ export const POST = (async ({ request, platform }) => {
     if (shared_auth_key === kvKey) xAuth = 'true'
   }
   // main
-  const model = data.get("model")?.toString() || 'dreamshaper-8-lcm'
-  const prompt = data.get("prompt")?.toString() || ''
+  const data = await request.formData()
+  const model = data.get('model')?.toString() || 'dreamshaper-8-lcm'
+  const prompt = data.get('prompt')?.toString() || ''
   try {
     const image = await t2i(platform?.env?.AI, model, prompt)
     return new Response(image, {

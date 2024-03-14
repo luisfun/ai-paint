@@ -14,7 +14,7 @@
     </a>
     <LightSwitch />
   </header>
-  <main class="flex-1 my-8">
+  <main class="flex-1 my-4">
     <slot />
   </main>
 

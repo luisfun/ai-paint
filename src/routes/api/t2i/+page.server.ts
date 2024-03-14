@@ -1,6 +1,8 @@
 import { Ai } from '@cloudflare/ai'
 import { verify } from "$lib/ts/verify"
 
+export const prerender = false
+
 export const actions = {
   default: async ({ request, url, platform }) => {
     // turnstile

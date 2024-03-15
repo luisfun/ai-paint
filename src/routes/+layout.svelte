@@ -6,7 +6,9 @@
   import Head from './Head.svelte'
 </script>
 
-<Head />
+<svelte:head>
+  <Head />
+</svelte:head>
 <div class="m-auto px-4 max-w-screen-lg">
   <header class="flex justify-between items-center my-4">
     <a class="text-inherit w-6 h-6" aria-label="Top Page" href="/">
@@ -40,8 +42,9 @@
   :global(:root [data-theme='wintry']) {
     --theme-font-family-heading: system-ui;
     --theme-font-color-base: #000;
-    background-image: radial-gradient(at 50% 0%, rgba(var(--color-secondary-500) / 0.18) 0px, transparent 75%),
-      radial-gradient(at 100% 0%, rgba(var(--color-tertiary-500) / 0.18) 0px, transparent 50%);
+    --color-surface-900: 17 18 23;
+    background-image: radial-gradient(at 50% 0%, rgba(var(--color-secondary-500) / 0.1) 0px, transparent 75%),
+      radial-gradient(at 100% 0%, rgba(var(--color-tertiary-500) / 0.1) 0px, transparent 50%);
   }
   :global(h2) {
     font-size: 2rem;
@@ -52,7 +55,7 @@
     margin: 1.5rem 0 0.75rem;
   }
   :global(p) {
-    margin: .5rem 0;
+    margin: 0.5rem 0;
   }
   :global(a) {
     color: #4693ff;

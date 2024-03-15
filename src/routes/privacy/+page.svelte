@@ -93,3 +93,10 @@
   Please be aware that we don’t endorse the products or services advertised on this site. We’re not accountable for the
   content or accuracy of these advertisements.
 </p>
+
+<h2>Other</h2>
+<p>
+  The source code of the site is published on <NewTab href="https://github.com/LuisFun/ai-paint" label="Github"
+    >GitHub</NewTab
+  >.
+</p>

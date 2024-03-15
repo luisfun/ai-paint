@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
+  import { afterNavigate } from '$app/navigation'
   import { ProgressRadial } from '@skeletonlabs/skeleton'
   import Svg from '$lib/svelte/Svg.svelte'
   import AdSense from '$lib/svelte/AdSense.svelte'
@@ -13,6 +14,10 @@
       url.searchParams.delete('auth')
       history.replaceState({}, '', url)
     }
+  })
+
+  afterNavigate(() => {
+    document.querySelector('input')?.focus()
   })
 
   const models = ['dreamshaper-8-lcm', 'stable-diffusion-xl-lightning']
@@ -68,9 +73,6 @@
 <AdSense enabled={adsense} />
 
 <style>
-  p {
-    margin: 0.5rem 0;
-  }
   .input-group button {
     padding: 0.5rem;
   }

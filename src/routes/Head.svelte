@@ -20,6 +20,6 @@
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content={site.colorDark} />
   <meta name="msapplication-TileColor" content={site.tileColor} />
   <link rel="manifest" href="/manifest.webmanifest" />
-  <link rel="icon" href={site.icon} />
-  <link rel="apple-touch-icon" sizes={site.apple.sizes} href={site.apple.icon} />
+  <link rel="icon" type="image/svg+xml" href={site.icon.svg} />
+  <link rel="apple-touch-icon" sizes={site.icon.apple.sizes} href={site.icon.apple.png} />
 </svelte:head>

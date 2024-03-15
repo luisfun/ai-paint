@@ -51,6 +51,9 @@
     font-size: 1.5rem;
     margin: 1.5rem 0 0.75rem;
   }
+  :global(p) {
+    margin: .5rem 0;
+  }
   :global(a) {
     color: #4693ff;
     text-decoration: none;
@@ -65,5 +68,11 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+  :global(.accordion-panel > *) {
+    margin-top: 0;
+  }
+  :global(.space-y-4 > :not([hidden]) ~ :not([hidden])) {
+    margin-top: 0;
   }
 </style>

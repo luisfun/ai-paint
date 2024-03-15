@@ -1,16 +1,16 @@
 {
-  "name": "AI Image Generator by Luis.Fun",
-  "short_name": "Image Generator",
+  "name": "AI Paint",
+  "short_name": "AI Paint",
   "lang": "en",
   "start_url": "/",
-  "background_color": "#111217",
-  "theme_color": "#111217",
+  "background_color": "#111827",
+  "theme_color": "#111827",
   "display": "standalone",
   "icons": [
     {
       "type": "image/png",
-      "src": "/favicon.png",
-      "sizes": "120x120"
+      "src": "/favicon-dark.png",
+      "sizes": "512x512"
     }
   ]
 }

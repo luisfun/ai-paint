@@ -7,10 +7,12 @@ export const site = {
   colorLight: '#f0f6fc',
   colorDark: '#111217',
   tileColor: '#111217',
-  icon: '/favicon.svg',
-  apple: {
-    sizes: '120x120',
-    icon: '/favicon.png',
+  icon: {
+    svg: '/favicon.svg',
+    apple: {
+      sizes: '512x512',
+      png: '/favicon.png',
+    },
   },
 }
 

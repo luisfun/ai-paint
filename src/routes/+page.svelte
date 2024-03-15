@@ -28,6 +28,7 @@
   let loading = false
   let error = 200
   let adsense = false
+  let count = 0
 
   const submit = async (event: Event) => {
     event.preventDefault()
@@ -39,6 +40,16 @@
     else imageUrl = ''
     loading = false
     if (res.headers.get('X-Auth') !== 'true') adsense = true
+    count++
+    adRefresh()
+  }
+
+  const adRefresh = () => {
+    if (count > 10) {
+      const adtag = "googletag" in window && window.googletag as any
+      if (adtag.apiReady) adtag.pubads().refresh()
+      count = 0
+    }
   }
 </script>
 
@@ -59,7 +70,7 @@
   {/if}
   {#if loading}
     <div class="absolute inset-0 flex-center">
-      <ProgressRadial />
+      <ProgressRadial stroke={60} meter="stroke-primary-500" track="stroke-primary-500/30" />
     </div>
   {/if}
 </div>

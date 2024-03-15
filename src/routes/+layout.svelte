@@ -6,9 +6,7 @@
   import Head from './Head.svelte'
 </script>
 
-<svelte:head>
-  <Head />
-</svelte:head>
+<Head />
 <div class="m-auto px-4 max-w-screen-lg">
   <header class="flex justify-between items-center my-4">
     <a class="text-inherit w-6 h-6" aria-label="Top Page" href="/">
@@ -19,7 +17,6 @@
   <main class="flex-1 my-4">
     <slot />
   </main>
-
   <footer class="flex justify-between items-center text-xs my-8">
     <a class="text-inherit" href="/privacy">Privacy Policy</a>
     <NewTab color="inherit" href="https://github.com/LuisFun/ai-paint" label="Github">
@@ -66,16 +63,17 @@
     color: rgb(249 115 22);
     text-decoration: underline;
   }
-  :global(.flex-center) {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
   :global(.accordion-panel > *) {
     margin-top: 0;
   }
   :global(.space-y-4 > :not([hidden]) ~ :not([hidden])) {
     margin-top: 0;
+  }
+
+  :global(.flex-center) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 </style>

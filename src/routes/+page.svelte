@@ -54,7 +54,7 @@
   {:else if !loading}
     <div class="flex-center">
       <p>Type Prompt and Enter</p>
-      <p>↓</p>
+      <div class="w-4 h-4"><Svg icon="angles-down" /></div>
     </div>
   {/if}
   {#if loading}

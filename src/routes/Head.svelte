@@ -2,17 +2,19 @@
   import { site } from '$lib/config'
   export let title: string = site.title
   export let description: string = site.description
-  export let image: string = site.image
+  //export let image: string = site.image
 </script>
 
 <svelte:head>
   <title>{title}</title>
   <meta name="description" content={description} />
+  <!--
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:url" content={site.url} />
   <meta property="og:image" content={image} />
   <meta property="og:type" content="website" />
+  -->
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:creator" content={site.author} />
   <meta name="theme-color" media="(prefers-color-scheme: light)" content={site.color.light} />

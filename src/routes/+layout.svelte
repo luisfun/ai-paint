@@ -1,7 +1,6 @@
 <script lang="ts">
   import '../app.postcss'
   import { LightSwitch } from '@skeletonlabs/skeleton'
-  import NewTab from '$lib/svelte/NewTab.svelte'
   import Svg from '$lib/svelte/Svg.svelte'
   import Head from './Head.svelte'
 </script>
@@ -39,8 +38,8 @@
       radial-gradient(at 100% 0%, rgba(var(--color-tertiary-500) / 0.1) 0px, transparent 50%);
   }
   :global(:root) {
-    --font-color-base-sub: rgba(0,0,0,0.6);
-    --font-color-dark-sub: rgba(255,255,255,0.6);
+    --font-color-base-sub: rgba(0, 0, 0, 0.6);
+    --font-color-dark-sub: rgba(255, 255, 255, 0.6);
   }
   :global(h2) {
     font-size: 2rem;

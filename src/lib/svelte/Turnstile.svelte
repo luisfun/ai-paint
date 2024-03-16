@@ -1,8 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { turnstileSiteKey } from '$lib/config'
 
-  export let widgetID: string = 'turnstile_widget'
+  export let sitekey: string
   let display: 'flex' | 'hidden' = 'hidden'
 
   onMount(async () => {
@@ -21,7 +20,7 @@
           await new Promise((resolve, reject) => {
             // @ts-expect-error turnstile
             turnstile.render('#turnstile_widget', {
-              sitekey: turnstileSiteKey,
+              sitekey,
               'error-callback': (e: any) => {
                 display = 'hidden'
                 reject(e)
@@ -49,11 +48,11 @@
 </script>
 
 <div class="fixed inset-0 z-10 bga-07 justify-center items-center {display}">
-  <div id={widgetID}></div>
+  <div id="turnstile_widget"></div>
 </div>
 
 <style>
   .bga-07 {
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.5);
   }
 </style>

@@ -19,8 +19,9 @@ export const site = {
 }
 
 export const adsense = {
+  display: true,
   client: '5106375978729065',
   slot: '3405470619',
 }
 
-export const turnstileSiteKey = '0x4AAAAAAAUxKfXsRX5cgoMT'
+export const turnstileSitekey = '0x4AAAAAAAUxKfXsRX5cgoMT'

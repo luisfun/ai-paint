@@ -1,12 +1,17 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { adsense } from '$lib/config'
 
   export let enabled = false
+  export let adsense = {
+    display: false,
+    client: '',
+    slot: '',
+  }
 
   let scriptTag: HTMLScriptElement
 
-  $: if (enabled && scriptTag) scriptTag.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
+  $: if (adsense.display && enabled && scriptTag)
+    scriptTag.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
 
   onMount(() => {
     // @ts-expect-error 他の書き方がわからない

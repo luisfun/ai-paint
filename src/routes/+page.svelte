@@ -5,6 +5,7 @@
   import Svg from '$lib/svelte/Svg.svelte'
   import AdSense from '$lib/svelte/AdSense.svelte'
   import Turnstile from '$lib/svelte/Turnstile.svelte'
+  import { adsense, turnstileSitekey } from '$lib/config'
 
   onMount(() => {
     const url = new URL(window.location.toString())
@@ -27,7 +28,7 @@
   let imageUrl = ''
   let loading = false
   let error = 200
-  let adsense = false
+  let adDisplay = false
 
   const submit = async (event: Event) => {
     event.preventDefault()
@@ -38,24 +39,19 @@
     if (res.ok) imageUrl = URL.createObjectURL(await res.blob())
     else imageUrl = ''
     loading = false
-    if (res.headers.get('X-Auth') !== 'true') adsense = true
+    if (res.headers.get('X-Auth') !== 'true') adDisplay = true
   }
 </script>
 
 <div class="relative w-[512px] aspect-square max-w-full my-4 mx-auto flex-center">
-  <div class="absolute inset-0 flex-center {imageUrl || loading || error !== 200 ? 'opacity-0' : 'z-10'}"></div>
   {#if imageUrl}
     <img class="max-w-full h-auto {loading ? 'opacity-50' : ''}" src={imageUrl} alt="Generated" />
   {:else if error !== 200}
-    <div class="flex-center">
-      <b>Error: {error}</b>
-      <p>Please try to generate it again</p>
-    </div>
+    <b>Error: {error}</b>
+    <p>Please try to generate it again</p>
   {:else if !loading}
-    <div class="flex-center">
-      <p>Type Prompt and Enter</p>
-      <div class="w-4 h-4"><Svg icon="angles-down" /></div>
-    </div>
+    <p>Type Prompt and Enter</p>
+    <div class="w-4 h-4"><Svg icon="angles-down" /></div>
   {/if}
   {#if loading}
     <div class="absolute inset-0 flex-center">
@@ -69,8 +65,8 @@
     <Svg icon="paint" />
   </button>
 </form>
-<Turnstile />
-<AdSense enabled={adsense} />
+<Turnstile sitekey={turnstileSitekey} />
+<AdSense enabled={adDisplay} {adsense} />
 
 <style>
   .input-group button {

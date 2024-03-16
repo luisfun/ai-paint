@@ -1,38 +1,43 @@
-# create-svelte
+# [AI Paint](https://ai-paint.luis.fun)
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+## Fork, Clone, Install
 
-## Creating a project
+[Fork and Clone](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo)
 
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
+```sh
+cd ai-paint
+npm i
 ```
 
-## Developing
+## Edit Settings
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+`src\lib\config.ts`  
+`src\app.html`
 
-```bash
+> [!IMPORTANT]
+> Be sure to edit this files.
+
+## Development
+
+```sh
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+## Create Pages
 
-To create a production version of your app:
+[Cloudflare Pages](https://developers.cloudflare.com/pages/get-started/git-integration/)
 
-```bash
-npm run build
-```
+Binding to Functions, etc.  
+`Cloudflare Dashboard` > `Workers & Pages` > `ai-paint` > `Settings` > `Functions`
 
-You can preview the production build with `npm run preview`.
+## Setup Turnstile
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+[Key issuance and WAF setup](https://blog.cloudflare.com/integrating-turnstile-with-the-cloudflare-waf-to-challenge-fetch-requests)
+
+## Regulate Dev URLs
+
+Use the Access policy to restrict access to development previews.
+`Cloudflare Dashboard` > `Workers & Pages` > `ai-paint` > `Manage` > `Access policy` > `Enable access policy`
+
+Redirect access to ai-paint.pages.dev using Bulk Redirects.  
+`Bulk Redirects` > ...

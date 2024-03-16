@@ -36,7 +36,10 @@
     loading = true
     const res = await fetch(`/api/t2i?model=${model}&prompt=${prompt}`)
     error = res.status
-    if (res.ok) imageUrl = URL.createObjectURL(await res.blob())
+    if (res.ok) {
+      if (imageUrl) URL.revokeObjectURL(imageUrl)
+      imageUrl = URL.createObjectURL(await res.blob())
+    }
     else imageUrl = ''
     loading = false
     if (res.headers.get('X-Auth') !== 'true') adDisplay = true

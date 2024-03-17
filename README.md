@@ -12,7 +12,6 @@ npm i
 ## Edit Settings
 
 `src\lib\config.ts`  
-`src\app.html`
 
 > [!IMPORTANT]
 > Be sure to edit this files.

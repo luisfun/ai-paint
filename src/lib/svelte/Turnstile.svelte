@@ -4,12 +4,12 @@
   export let sitekey: string
   let display: 'flex' | 'hidden' = 'hidden'
 
-  onMount(async () => {
+  onMount(() => {
     const script = document.createElement('script')
     script.async = true
     script.defer = true
+    const originalFetch = window.fetch
     script.onload = () => {
-      const originalFetch = window.fetch
       // Override the native fetch function
       window.fetch = async function (...args) {
         let response = await originalFetch(...args)
@@ -44,6 +44,8 @@
     }
     script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js'
     document.body.appendChild(script)
+    // Clear fetch function
+    return () => window.fetch = originalFetch
   })
 </script>
 

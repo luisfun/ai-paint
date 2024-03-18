@@ -49,12 +49,12 @@
   })
 </script>
 
-<div class="fixed inset-0 z-10 bga-07 justify-center items-center {display}">
+<div class="fixed inset-0 z-10 bga justify-center items-center {display}">
   <div id="turnstile_widget"></div>
 </div>
 
 <style>
-  .bga-07 {
+  .bga {
     background-color: rgba(0, 0, 0, 0.5);
   }
 </style>

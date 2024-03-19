@@ -72,9 +72,9 @@
 <div class="relative w-[512px] aspect-square max-w-full my-4 mx-auto flex-center">
   {#if tab === 0}
     <div class="w-full h-2/3 flex-center">
-      {#if fileUrl}
+      {#if fileUrl.src}
         <img src={fileUrl.src} alt="Upload" />
-      {:else if resImg && resImgUrl}
+      {:else if resImg && resImgUrl.src}
         <button type="button" class="btn variant-filled-surface" on:click={insertBlob}>
           <div class="inline-block w-4 h-4 mr-2"><Svg icon="file-arrow-up" /></div>
           Insert result image
@@ -100,7 +100,7 @@
   {:else if tab === 1}
     <div />
   {:else if tab === 2}
-    {#if resImgUrl}
+    {#if resImgUrl.src}
       <img class={loading ? 'opacity-50' : ''} src={resImgUrl.src} alt="Generated" />
     {:else if error !== 200}
       <b>Error: {error}</b>

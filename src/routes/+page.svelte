@@ -40,7 +40,7 @@
   const insertBlob = () => {
     if (resImg && resImgUrl) {
       file = new Blob([resImg])
-      fileUrl.set(resImgUrl.src)
+      fileUrl.set(file)
     }
   }
   const deleteFile = () => {
@@ -74,7 +74,7 @@
     <div class="w-full h-2/3 flex-center">
       {#if fileUrl.src}
         <img src={fileUrl.src} alt="Upload" />
-      {:else if resImg && resImgUrl.src}
+      {:else if resImg}
         <button type="button" class="btn variant-filled-surface" on:click={insertBlob}>
           <div class="inline-block w-4 h-4 mr-2"><Svg icon="file-arrow-up" /></div>
           Insert result image

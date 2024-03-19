@@ -77,7 +77,7 @@
         <img src={fileUrl} alt="Upload" />
       {:else if resImg}
         <button type="button" class="btn variant-filled-surface" on:click={insertBlob}>
-          <div class="inline-block w-4 h-4 mr-2"><Svg icon="file-arrow-up" /></div>
+          <div class="inline-block w-4 h-4 mr-2 flex-center"><Svg icon="file-arrow-up" /></div>
           Insert result image
         </button>
       {/if}

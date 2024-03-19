@@ -64,6 +64,7 @@
       resImg = await res.blob()
       resImgUrl = objURL(resImgUrl, resImg)
     } else resImgUrl = objURL(resImgUrl, "")
+    tab = 2
     loading = false
     if (res.headers.get('X-Auth') !== 'true') adDisplay = true
   }

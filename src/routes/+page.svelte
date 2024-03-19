@@ -5,6 +5,7 @@
   import AdSense from '$lib/svelte/AdSense.svelte'
   import Turnstile from '$lib/svelte/Turnstile.svelte'
   import { adsense, turnstileSitekey } from '$lib/config'
+  import { ImgSrc } from "$lib/ts/img-src"
 
   onMount(() => {
     const url = new URL(window.location.toString())
@@ -20,11 +21,11 @@
 
   let tab = 2
   let file: File | Blob | undefined = undefined
-  let fileUrl = ''
+  let fileUrl = new ImgSrc()
   let mask: Blob | undefined = undefined
   let prompt = ''
   let resImg: Blob | undefined = undefined
-  let resImgUrl = ''
+  let resImgUrl = new ImgSrc()
   let loading = false
   let error = 200
   let adDisplay = false
@@ -33,21 +34,18 @@
     const target = event.target as HTMLInputElement
     file = target.files?.[0]
     target.value = ''
-    if (!file) fileUrl = ''
-    else {
-      if (fileUrl) URL.revokeObjectURL(fileUrl)
-      fileUrl = URL.createObjectURL(file)
-    }
+    if (!file) fileUrl.set("")
+    else fileUrl.set(file)
   }
   const insertBlob = () => {
     if (resImg && resImgUrl) {
       file = new Blob([resImg])
-      fileUrl = resImgUrl
+      fileUrl.set(resImgUrl.src)
     }
   }
   const deleteFile = () => {
     file = undefined
-    fileUrl = ''
+    fileUrl.set("")
   }
 
   const submit = async () => {
@@ -63,10 +61,9 @@
     const res = await fetch('/api/image', { method: 'POST', body })
     error = res.status
     if (res.ok) {
-      if (resImgUrl) URL.revokeObjectURL(resImgUrl)
       resImg = await res.blob()
-      resImgUrl = URL.createObjectURL(resImg)
-    } else resImgUrl = ''
+      resImgUrl.set(resImg)
+    } else resImgUrl.set("")
     loading = false
     if (res.headers.get('X-Auth') !== 'true') adDisplay = true
   }
@@ -76,7 +73,7 @@
   {#if tab === 0}
     <div class="w-full h-2/3 flex-center">
       {#if fileUrl}
-        <img src={fileUrl} alt="Upload" />
+        <img src={fileUrl.src} alt="Upload" />
       {:else if resImg && resImgUrl}
         <button type="button" class="btn variant-filled-surface" on:click={insertBlob}>
           <div class="inline-block w-4 h-4 mr-2"><Svg icon="file-arrow-up" /></div>
@@ -104,7 +101,7 @@
     <div />
   {:else if tab === 2}
     {#if resImgUrl}
-      <img class={loading ? 'opacity-50' : ''} src={resImgUrl} alt="Generated" />
+      <img class={loading ? 'opacity-50' : ''} src={resImgUrl.src} alt="Generated" />
     {:else if error !== 200}
       <b>Error: {error}</b>
       <p>Please try to generate it again</p>

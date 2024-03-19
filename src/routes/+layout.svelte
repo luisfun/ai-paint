@@ -1,8 +1,8 @@
 <script lang="ts">
   import '../app.postcss'
   import { LightSwitch } from '@skeletonlabs/skeleton'
+  import Head from '$lib/svelte/Head.svelte'
   import Svg from '$lib/svelte/Svg.svelte'
-  import Head from './Head.svelte'
 </script>
 
 <Head />
@@ -40,6 +40,11 @@
   :global(:root) {
     --font-color-base-sub: rgba(0, 0, 0, 0.6);
     --font-color-dark-sub: rgba(255, 255, 255, 0.6);
+  }
+  :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
   :global(h2) {
     font-size: 2rem;

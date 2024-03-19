@@ -11,7 +11,7 @@ npm i
 
 ## Edit Settings
 
-`src\lib\config.ts`  
+`src\lib\config.ts`
 
 > [!IMPORTANT]
 > Be sure to edit this files.

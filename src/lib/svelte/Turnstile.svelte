@@ -45,7 +45,7 @@
     script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js'
     document.body.appendChild(script)
     // Clear fetch function
-    return () => window.fetch = originalFetch
+    return () => (window.fetch = originalFetch)
   })
 </script>
 

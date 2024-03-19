@@ -39,9 +39,9 @@
       fileUrl = URL.createObjectURL(file)
     }
   }
-  const replaseFile = () => {
+  const insertBlob = () => {
     if (resImg && resImgUrl) {
-      file = resImg
+      file = new Blob([resImg])
       fileUrl = resImgUrl
     }
   }
@@ -74,12 +74,13 @@
 
 <div class="relative w-[512px] aspect-square max-w-full my-4 mx-auto flex-center">
   {#if tab === 0}
-    <div class="w-full h-2/3">
+    <div class="w-full h-2/3 flex-center">
       {#if fileUrl}
         <img src={fileUrl} alt="Upload" />
       {:else if resImg && resImgUrl}
-        <button type="button" class="btn variant-filled-surface m-auto p-2" on:click={replaseFile}>
-          <Svg icon="file-arrow-up" /> Insert result image
+        <button type="button" class="btn variant-filled-surface" on:click={insertBlob}>
+          <div class="inline-block w-4 h-4 mr-2"><Svg icon="file-arrow-up" /></div>
+          Insert result image
         </button>
       {/if}
     </div>

@@ -11,6 +11,9 @@ export const POST = (async ({ request, platform }) => {
   }
   // main
   const body = await request.formData()
+  const steps = Number(body.get('steps') as string | null)
+  const strength = Number(body.get('strength') as string | null)
+  const guidance = Number(body.get('guidance') as string | null)
   const file = body.get('file') as File | Blob | null
   const mask = body.get('mask') as Blob | null
   const lang = body.get('lang') as string | null
@@ -22,6 +25,9 @@ export const POST = (async ({ request, platform }) => {
       lang && lang !== 'en' ? await m2m(ai, prompt, lang, 'en') : prompt,
       file ? [...new Uint8Array(await file.arrayBuffer())] : undefined,
       mask ? [...new Uint8Array(await mask.arrayBuffer())] : undefined,
+      steps,
+      strength,
+      guidance,
     )
     return new Response(image, {
       headers: {
@@ -43,7 +49,15 @@ export const fallback = (({ request }) => {
   return new Response(`I caught your ${request.method} request.`, { status: 405 })
 }) satisfies RequestHandler
 
-const generate = (ai: any, prompt: string, image?: number[], mask?: number[]) => {
+const generate = (
+  ai: any,
+  prompt: string,
+  image?: number[],
+  mask?: number[],
+  steps?: number,
+  strength?: number,
+  guidance?: number,
+) => {
   // prettier-ignore
   const model =
     !image ? '@cf/lykon/dreamshaper-8-lcm' :
@@ -51,7 +65,7 @@ const generate = (ai: any, prompt: string, image?: number[], mask?: number[]) =>
      image &&  mask ? '@cf/runwayml/stable-diffusion-v1-5-inpainting' :
     '@cf/stabilityai/stable-diffusion-xl-base-1.0'
   const num_steps = model === '@cf/lykon/dreamshaper-8-lcm' ? 8 : 20
-  return ai.run(model, { prompt, num_steps, image, mask }) as ArrayBuffer
+  return ai.run(model, { prompt, num_steps, image, mask, steps, strength, guidance }) as ArrayBuffer
 }
 
 const m2m = async (ai: any, text: string, source_lang: string, target_lang: string) =>

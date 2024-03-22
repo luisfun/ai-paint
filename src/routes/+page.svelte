@@ -17,10 +17,13 @@
     }
   })
 
-  const tabIcons = ['file-arrow-up', 'crop-simple', 'image'] as const
+  const tabIcons = ['gear', 'file-arrow-up', 'crop-simple', 'image'] as const
   const langs = ['en', ...['es', 'fr', 'ar', 'ru', 'zh', 'ja', 'ko'].sort()]
 
-  let tab = 2
+  let tab = 3
+  let steps = 8
+  let strength = 1
+  let guidance = 7.5
   let file: File | Blob | undefined = undefined
   let fileUrl = ''
   let mask: Blob | undefined = undefined
@@ -53,8 +56,11 @@
   const submit = async () => {
     if (loading) return null
     loading = true
-    tab = 2
+    tab = 3
     const body = new FormData()
+    body.append('steps', steps.toString())
+    body.append('strength', strength.toString())
+    body.append('guidance', guidance.toString())
     if (file) {
       body.append('file', file)
       if (mask) body.append('mask', mask)
@@ -67,7 +73,7 @@
       resImg = await res.blob()
       resImgUrl = objURL(resImgUrl, resImg)
     } else resImgUrl = objURL(resImgUrl, '')
-    tab = 2
+    tab = 3
     loading = false
     if (res.headers.get('X-Auth') !== 'true') adDisplay = true
   }
@@ -75,6 +81,24 @@
 
 <div class="relative w-[512px] aspect-square max-w-full my-4 mx-auto flex-center">
   {#if tab === 0}
+    <div class="w-64 max-w-full">
+      <p class="text-center">Additional Settings</p>
+      <hr />
+      {#if !file}
+        <p>Mode: Text to Image</p>
+      {:else if !mask}
+        <p>Mode: Image to Image</p>
+      {:else}
+        <p>Mode: Inpainting</p>
+      {/if}
+      <p>Steps: {steps}</p>
+      <input type="range" max="20" bind:value={steps} disabled />
+      <p>Strength: {strength}</p>
+      <input type="range" max="2" step=".05" bind:value={strength} />
+      <p>Guidance: {guidance}</p>
+      <input type="range" max="15" step=".5" bind:value={guidance} />
+    </div>
+  {:else if tab === 1}
     <div class="w-full h-2/3 flex-center">
       {#if fileUrl}
         <img src={fileUrl} alt="Upload" />
@@ -101,9 +125,9 @@
         <Svg icon="trash-can" />
       </button>
     </div>
-  {:else if tab === 1}
-    <div />
   {:else if tab === 2}
+    <div />
+  {:else if tab === 3}
     {#if resImgUrl}
       <img class={loading ? 'opacity-50' : ''} src={resImgUrl} alt="Generated" />
     {:else if error !== 200}
@@ -134,7 +158,7 @@
 <div class="mb-4 flex justify-center">
   <RadioGroup active="variant-filled-surface" border="">
     {#each tabIcons as icon, i}
-      <RadioItem name="tab" bind:group={tab} value={i} disabled={i === 1 && !file}>
+      <RadioItem name="tab" bind:group={tab} value={i} disabled={i === 2 && !file}>
         <div class="w-4 h-4 flex-center"><Svg {icon} /></div>
       </RadioItem>
     {/each}

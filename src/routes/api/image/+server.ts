@@ -13,11 +13,13 @@ export const POST = (async ({ request, platform }) => {
   const body = await request.formData()
   const file = body.get('file') as File | Blob | null
   const mask = body.get('mask') as Blob | null
+  const lang = body.get('lang') as string | null
   const prompt = (body.get('prompt') as string | null) || ''
   try {
+    const ai = new Ai(platform?.env?.AI)
     const image = await generate(
-      platform?.env?.AI,
-      prompt,
+      ai,
+      lang && lang !== 'en' ? await m2m(ai, prompt, lang, 'en') : prompt,
       file ? [...new Uint8Array(await file.arrayBuffer())] : undefined,
       mask ? [...new Uint8Array(await mask.arrayBuffer())] : undefined,
     )
@@ -41,9 +43,7 @@ export const fallback = (({ request }) => {
   return new Response(`I caught your ${request.method} request.`, { status: 405 })
 }) satisfies RequestHandler
 
-const generate = (envAi: any, prompt: string, image?: number[], mask?: number[]) => {
-  if (!envAi) throw new Error('There is no env.AI')
-  const ai = new Ai(envAi)
+const generate = (ai: any, prompt: string, image?: number[], mask?: number[]) => {
   // prettier-ignore
   const model =
     !image ? '@cf/lykon/dreamshaper-8-lcm' :
@@ -51,8 +51,11 @@ const generate = (envAi: any, prompt: string, image?: number[], mask?: number[])
      image &&  mask ? '@cf/runwayml/stable-diffusion-v1-5-inpainting' :
     '@cf/stabilityai/stable-diffusion-xl-base-1.0'
   const num_steps = model === '@cf/lykon/dreamshaper-8-lcm' ? 8 : 20
-  return ai.run(model, { prompt, num_steps, image, mask })
+  return ai.run(model, { prompt, num_steps, image, mask }) as ArrayBuffer
 }
+
+const m2m = async (ai: any, text: string, source_lang: string, target_lang: string) =>
+  (await ai.run('@cf/meta/m2m100-1.2b', { text, source_lang, target_lang })).translated_text as string
 
 const cookie = (request: Request) =>
   (request.headers.get('Cookie') || '').split('; ').reduce((res: Record<string, string>, item) => {

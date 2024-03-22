@@ -5,7 +5,7 @@
   import AdSense from '$lib/svelte/AdSense.svelte'
   import Turnstile from '$lib/svelte/Turnstile.svelte'
   import { adsense, turnstileSitekey } from '$lib/config'
-  import { objURL } from "$lib/ts/obj-url"
+  import { objURL } from '$lib/ts/obj-url'
 
   onMount(() => {
     const url = new URL(window.location.toString())
@@ -18,14 +18,16 @@
   })
 
   const tabIcons = ['file-arrow-up', 'crop-simple', 'image'] as const
+  const langs = ['en', ...['es', 'fr', 'ar', 'ru', 'zh', 'ja', 'ko'].sort()]
 
   let tab = 2
   let file: File | Blob | undefined = undefined
-  let fileUrl = ""
+  let fileUrl = ''
   let mask: Blob | undefined = undefined
+  let lang: (typeof langs)[number] = 'en'
   let prompt = ''
   let resImg: Blob | undefined = undefined
-  let resImgUrl = ""
+  let resImgUrl = ''
   let loading = false
   let error = 200
   let adDisplay = false
@@ -34,7 +36,7 @@
     const target = event.target as HTMLInputElement
     file = target.files?.[0]
     target.value = ''
-    if (!file) fileUrl = objURL(fileUrl, "")
+    if (!file) fileUrl = objURL(fileUrl, '')
     else fileUrl = objURL(fileUrl, file)
   }
   const insertBlob = () => {
@@ -45,7 +47,7 @@
   }
   const deleteFile = () => {
     file = undefined
-    fileUrl = objURL(fileUrl, "")
+    fileUrl = objURL(fileUrl, '')
   }
 
   const submit = async () => {
@@ -57,13 +59,14 @@
       body.append('file', file)
       if (mask) body.append('mask', mask)
     }
+    body.append('lang', lang)
     body.append('prompt', prompt)
     const res = await fetch('/api/image', { method: 'POST', body })
     error = res.status
     if (res.ok) {
       resImg = await res.blob()
       resImgUrl = objURL(resImgUrl, resImg)
-    } else resImgUrl = objURL(resImgUrl, "")
+    } else resImgUrl = objURL(resImgUrl, '')
     tab = 2
     loading = false
     if (res.headers.get('X-Auth') !== 'true') adDisplay = true
@@ -117,8 +120,19 @@
     {/if}
   {/if}
 </div>
-<div class="flex-center my-4">
-  <RadioGroup active="variant-filled-surface">
+<form class="input-group input-group-divider grid-cols-[auto_1fr_auto] mt-4 mx-auto" on:submit|preventDefault={submit}>
+  <select bind:value={lang}>
+    {#each langs as la}
+      <option value={la}>{la.toUpperCase()}</option>
+    {/each}
+  </select>
+  <input type="text" placeholder="Prompt" bind:value={prompt} />
+  <button type="submit" class="input-group-shim bg-inherit" aria-label="Generate">
+    <Svg icon="paint" />
+  </button>
+</form>
+<div class="mb-4 flex justify-center">
+  <RadioGroup active="variant-filled-surface" border="">
     {#each tabIcons as icon, i}
       <RadioItem name="tab" bind:group={tab} value={i} disabled={i === 1 && !file}>
         <div class="w-4 h-4 flex-center"><Svg {icon} /></div>
@@ -126,16 +140,17 @@
     {/each}
   </RadioGroup>
 </div>
-<form class="input-group grid-cols-[1fr_auto] my-4 mx-auto" on:submit|preventDefault={submit}>
-  <input type="text" placeholder="Prompt" bind:value={prompt} />
-  <button type="submit" class="input-group-shim bg-inherit" aria-label="Generate">
-    <Svg icon="paint" />
-  </button>
-</form>
 <Turnstile sitekey={turnstileSitekey} />
 <AdSense enabled={adDisplay} {adsense} />
 
 <style>
+  :global(.input-group select) {
+    background-image: none;
+    padding-right: 0.5rem;
+  }
+  :global(.radio-group) {
+    border-radius: 0 0 1rem 1rem;
+  }
   :global(.radio-item) {
     padding: 0.25rem 0.75rem;
   }

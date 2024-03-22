@@ -1,5 +1,5 @@
-export const objURL = (src: string, obj: Blob | MediaSource | "") => {
+export const objURL = (src: string, obj: Blob | MediaSource | '') => {
   if (src) URL.revokeObjectURL(src)
-  if (obj === "") return obj
+  if (obj === '') return obj
   else return URL.createObjectURL(obj)
 }

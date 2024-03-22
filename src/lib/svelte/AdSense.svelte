@@ -23,7 +23,7 @@
   <script data-ad-client="ca-pub-{adsense.client}" async bind:this={scriptTag}></script>
 </svelte:head>
 
-<div class="my-8 mx-auto">
+<div class="my-4 mx-auto">
   <!-- display-bottom -->
   <ins
     class="adsbygoogle"

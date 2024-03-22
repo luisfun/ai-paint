@@ -21,7 +21,7 @@
   const langs = ['en', ...['es', 'fr', 'ar', 'ru', 'zh', 'ja', 'ko'].sort()]
 
   let tab = 3
-  let steps = 8
+  let steps = 0
   let strength = 1
   let guidance = 7.5
   let file: File | Blob | undefined = undefined

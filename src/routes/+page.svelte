@@ -17,7 +17,7 @@
     }
   })
 
-  const tabIcons = ['gear', 'file-arrow-up', 'crop-simple', 'image'] as const
+  const tabIcons = ['adjustments-horizontal', 'file-arrow-up', 'crop-simple', 'image'] as const
   const langs = ['en', ...['es', 'fr', 'ar', 'ru', 'zh', 'ja', 'ko'].sort()]
 
   let tab = 3
@@ -31,9 +31,15 @@
   let prompt = ''
   let resImg: Blob | undefined = undefined
   let resImgUrl = ''
+  let mode = 'Text to Image'
   let loading = false
   let error = 200
   let adDisplay = false
+
+  // prettier-ignore
+  $: !file ? (mode = 'Text to Image') :
+     !mask ? (mode = 'Image to Image') :
+     (mode = 'Inpainting')
 
   const uploadFile = (event: Event) => {
     const target = event.target as HTMLInputElement
@@ -82,15 +88,8 @@
 <div class="relative w-[512px] aspect-square max-w-full my-4 mx-auto flex-center">
   {#if tab === 0}
     <div class="w-64 max-w-full">
-      <p class="text-center">Additional Settings</p>
+      <p class="text-center">{mode}</p>
       <hr />
-      {#if !file}
-        <p>Mode: Text to Image</p>
-      {:else if !mask}
-        <p>Mode: Image to Image</p>
-      {:else}
-        <p>Mode: Inpainting</p>
-      {/if}
       <p>Steps: {steps}</p>
       <input type="range" max="20" bind:value={steps} disabled />
       <p>Strength: {strength}</p>

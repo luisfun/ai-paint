@@ -146,7 +146,7 @@
   {/if}
 </div>
 <form class="input-group input-group-divider grid-cols-[auto_1fr_auto] mt-4 mx-auto" on:submit|preventDefault={submit}>
-  <select bind:value={lang}>
+  <select bind:value={lang} aria-label="Gelect Language">
     {#each languages as la}
       <option value={la}>{la.slice(0, 2).toUpperCase()}</option>
     {/each}
@@ -159,7 +159,7 @@
 <div class="mb-4 flex justify-center">
   <RadioGroup active="variant-filled-surface" border="">
     {#each tabIcons as icon, i}
-      <RadioItem name="tab" bind:group={tab} value={i} disabled={i === 2 && !file}>
+      <RadioItem name="tab" label={icon} bind:group={tab} value={i} disabled={i === 2 && !file}>
         <div class="w-4 h-4 flex-center"><Svg {icon} /></div>
       </RadioItem>
     {/each}

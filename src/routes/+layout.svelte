@@ -22,6 +22,15 @@
 </div>
 
 <style>
+  :global(:root) {
+    --font-color-base-sub: rgba(0, 0, 0, 0.6);
+    --font-color-dark-sub: rgba(255, 255, 255, 0.6);
+  }
+  :global(:root [data-theme='wintry']) {
+    --theme-font-family-heading: system-ui;
+    background-image: radial-gradient(at 50% 0%, rgba(var(--color-secondary-500) / 0.1) 0px, transparent 75%),
+      radial-gradient(at 100% 0%, rgba(var(--color-tertiary-500) / 0.1) 0px, transparent 50%);
+  }
   :global(html) {
     font-size: medium;
   }
@@ -30,16 +39,11 @@
       font-size: large;
     }
   }
-  :global(:root [data-theme='wintry']) {
-    --theme-font-family-heading: system-ui;
-    --theme-font-color-base: 0 0 0;
-    --color-surface-900: 17 18 23;
-    background-image: radial-gradient(at 50% 0%, rgba(var(--color-secondary-500) / 0.1) 0px, transparent 75%),
-      radial-gradient(at 100% 0%, rgba(var(--color-tertiary-500) / 0.1) 0px, transparent 50%);
+  :global(.dark body) {
+    background-color:rgb(17 18 23);
   }
-  :global(:root) {
-    --font-color-base-sub: rgba(0, 0, 0, 0.6);
-    --font-color-dark-sub: rgba(255, 255, 255, 0.6);
+  :global([type='range']) {
+    accent-color: auto;
   }
   :global(img) {
     width: 100%;

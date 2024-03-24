@@ -11,7 +11,7 @@
     const url = new URL(window.location.toString())
     const auth = url.searchParams.get('auth')
     if (auth) {
-      document.cookie = `shared_auth_key=${auth}; path=/; max-age=${60 * 60 * 24 * 30 * 6}`
+      document.cookie = `shared_auth_key=${auth}; path=/; max-age=${60 * 60 * 24 * 31}`
       url.searchParams.delete('auth')
       history.replaceState({}, '', url)
     }

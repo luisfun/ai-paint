@@ -15,10 +15,12 @@
       url.searchParams.delete('auth')
       history.replaceState({}, '', url)
     }
+    const navLang = window.navigator.language
+    if (navLang && navLang.slice(0, 2).toLocaleLowerCase() !== "en") languages = [...languages, navLang]
   })
 
   const tabIcons = ['adjustments-horizontal', 'file-arrow-up', 'crop-simple', 'image'] as const
-  const langs = ['en', ...['es', 'fr', 'ar', 'ru', 'zh', 'ja', 'ko'].sort()]
+  let languages = ["en"]
 
   let tab = 3
   let steps = 0
@@ -27,7 +29,7 @@
   let file: File | Blob | undefined = undefined
   let fileUrl = ''
   let mask: Blob | undefined = undefined
-  let lang: (typeof langs)[number] = 'en'
+  let lang = languages[0]
   let prompt = ''
   let resImg: Blob | undefined = undefined
   let resImgUrl = ''
@@ -145,8 +147,8 @@
 </div>
 <form class="input-group input-group-divider grid-cols-[auto_1fr_auto] mt-4 mx-auto" on:submit|preventDefault={submit}>
   <select bind:value={lang}>
-    {#each langs as la}
-      <option value={la}>{la.toUpperCase()}</option>
+    {#each languages as la}
+      <option value={la}>{la.slice(0, 2).toUpperCase()}</option>
     {/each}
   </select>
   <input type="text" placeholder="Prompt" bind:value={prompt} />

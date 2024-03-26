@@ -40,7 +40,7 @@
     }
   }
   :global(.dark body) {
-    background-color:rgb(17 18 23);
+    background-color: rgb(17 18 23);
   }
   :global([type='range']) {
     accent-color: auto;

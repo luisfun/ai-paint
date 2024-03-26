@@ -22,7 +22,7 @@ export const POST = (async ({ request, platform }) => {
     const ai = new Ai(platform?.env?.AI)
     const image = await generate(
       ai,
-      (prompt && lang && lang !== 'en') ? await m2m(ai, prompt, lang, 'en') : prompt,
+      prompt && lang && lang !== 'en' ? await m2m(ai, prompt, lang, 'en') : prompt,
       file ? [...new Uint8Array(await file.arrayBuffer())] : undefined,
       mask ? [...new Uint8Array(await mask.arrayBuffer())] : undefined,
       steps,

@@ -15,12 +15,12 @@
       url.searchParams.delete('auth')
       history.replaceState({}, '', url)
     }
-    const navLang = window.navigator.language
-    if (navLang && navLang.slice(0, 2).toLocaleLowerCase() !== "en") languages = [...languages, navLang]
+    const navLang = window.navigator.language.split('-')[0]
+    if (navLang && navLang.slice(0, 2).toLocaleLowerCase() !== 'en') languages = [...languages, navLang]
   })
 
   const tabIcons = ['adjustments-horizontal', 'file-arrow-up', 'crop-simple', 'image'] as const
-  let languages = ["en"]
+  let languages = ['en']
 
   let tab = 3
   let steps = 0

@@ -5,7 +5,7 @@
   import AdSense from '$lib/svelte/AdSense.svelte'
   import Turnstile from '$lib/svelte/Turnstile.svelte'
   import { adsense, turnstileSitekey } from '$lib/config'
-  import { objURL } from '$lib/ts/obj-url'
+  import { recreateURL } from '$lib/ts/recreate-url'
 
   onMount(() => {
     const url = new URL(window.location.toString())
@@ -47,18 +47,18 @@
     const target = event.target as HTMLInputElement
     file = target.files?.[0]
     target.value = ''
-    if (!file) fileUrl = objURL(fileUrl, '')
-    else fileUrl = objURL(fileUrl, file)
+    if (!file) fileUrl = recreateURL(fileUrl, '')
+    else fileUrl = recreateURL(fileUrl, file)
   }
   const insertBlob = () => {
     if (resImg && resImgUrl) {
       file = new Blob([resImg])
-      fileUrl = objURL(fileUrl, file)
+      fileUrl = recreateURL(fileUrl, file)
     }
   }
   const deleteFile = () => {
     file = undefined
-    fileUrl = objURL(fileUrl, '')
+    fileUrl = recreateURL(fileUrl, '')
   }
 
   const submit = async () => {
@@ -79,8 +79,8 @@
     error = res.status
     if (res.ok) {
       resImg = await res.blob()
-      resImgUrl = objURL(resImgUrl, resImg)
-    } else resImgUrl = objURL(resImgUrl, '')
+      resImgUrl = recreateURL(resImgUrl, resImg)
+    } else resImgUrl = recreateURL(resImgUrl, '')
     tab = 3
     loading = false
     if (res.headers.get('X-Auth') !== 'true') adDisplay = true

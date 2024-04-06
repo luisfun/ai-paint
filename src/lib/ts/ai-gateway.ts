@@ -61,12 +61,10 @@ export class Gateway {
       body: JSON.stringify(inputs),
     })
     switch (getModelKey(model)) {
-      case 'translation':
-        return { response, outputs: (await response.json()).result as GetPostProcessedOutputsType<M> }
       case 'text-to-image':
         return { response, outputs: (await response.arrayBuffer()) as GetPostProcessedOutputsType<M> }
       default:
-        return { response, outputs: (await response.json()) as GetPostProcessedOutputsType<M> }
+        return { response, outputs: (await response.json()).result as GetPostProcessedOutputsType<M> }
     }
   }
 }

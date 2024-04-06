@@ -1,5 +1,6 @@
 import type { RequestHandler } from './$types'
-import { Ai } from '@cloudflare/ai'
+import { Gateway } from '$lib/ts/ai-gateway'
+//import { Ai } from '@cloudflare/ai'
 
 export const POST = (async ({ request, platform }) => {
   // shared auth
@@ -19,7 +20,8 @@ export const POST = (async ({ request, platform }) => {
   const lang = body.get('lang') as string | null
   const prompt = (body.get('prompt') as string | null) || ''
   try {
-    const ai = new Ai(platform?.env?.AI)
+    //const ai = new Ai(platform?.env?.AI)
+    const ai = new Gateway(platform?.env?.AI_GATEWAY_ENDPOINT, platform?.env?.WORKERS_AI_API_TOKEN)
     const image = await generate(
       ai,
       prompt && lang && lang !== 'en' ? await m2m(ai, prompt, lang, 'en') : prompt,
@@ -49,8 +51,8 @@ export const fallback = (({ request }) => {
   return new Response(`I caught your ${request.method} request.`, { status: 405 })
 }) satisfies RequestHandler
 
-const generate = (
-  ai: any,
+const generate = async (
+  ai: Gateway,
   prompt: string,
   image?: number[],
   mask?: number[],
@@ -65,11 +67,11 @@ const generate = (
      image &&  mask ? '@cf/runwayml/stable-diffusion-v1-5-inpainting' :
     '@cf/stabilityai/stable-diffusion-xl-base-1.0'
   const num_steps = !steps || steps === 0 ? (model === '@cf/lykon/dreamshaper-8-lcm' ? 8 : 20) : steps
-  return ai.run(model, { prompt, num_steps, image, mask, strength, guidance }) as ArrayBuffer
+  return (await ai.run(model, { prompt, num_steps, image, mask, strength, guidance }, { 'cf-cache-ttl': 60 })).outputs
 }
 
-const m2m = async (ai: any, text: string, source_lang: string, target_lang: string) =>
-  (await ai.run('@cf/meta/m2m100-1.2b', { text, source_lang, target_lang })).translated_text as string
+const m2m = async (ai: Gateway, text: string, source_lang: string, target_lang: string) =>
+  (await ai.run('@cf/meta/m2m100-1.2b', { text, source_lang, target_lang })).outputs.translated_text || ''
 
 const cookie = (request: Request) =>
   (request.headers.get('Cookie') || '').split('; ').reduce((res: Record<string, string>, item) => {

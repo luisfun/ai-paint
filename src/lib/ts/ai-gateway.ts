@@ -1,5 +1,6 @@
 import { modelMappings } from '@cloudflare/ai'
 
+/*****************************************************************************/
 // @cloudflare/ai https://www.npmjs.com/package/@cloudflare/ai
 type ModelMappings = typeof modelMappings
 // prettier-ignore
@@ -22,20 +23,26 @@ type GetModelClassType<M extends ModelName> = {
 }[keyof ModelMappings]
 type GetModelInstanceType<M extends ModelName> = InstanceType<GetModelClassType<M>>
 type GetPostProcessedOutputsType<M extends ModelName> = GetModelInstanceType<M>['postProcessedOutputs']
+/*****************************************************************************/
 
 type CacheHeaders = {
   'cf-skip-cache'?: boolean
   'cf-cache-ttl'?: number
 }
 
-const getModelKey = <M extends ModelName>(model: M) => {
-  const modelKeys = Object.keys(modelMappings) as (keyof ModelMappings)[]
-  for (const key of modelKeys) {
-    // @ts-expect-error
-    if (modelMappings[key].models.includes(model)) return key
-  }
-  return undefined
-}
+type GetModelKey<M extends ModelName> = {
+  [K in keyof ModelMappings]: M extends ModelMappings[K]['models'][number] ? K : never
+}[keyof ModelMappings]
+type Run<M extends ModelName> =
+  GetModelKey<M> extends 'text-generation'
+    ? {
+        response: Response
+        outputs: Exclude<GetPostProcessedOutputsType<M>, ReadableStream> & ReadableStream
+      }
+    : {
+        response: Response
+        outputs: GetPostProcessedOutputsType<M>
+      }
 
 export class Gateway {
   protected endpoint = ''
@@ -60,11 +67,14 @@ export class Gateway {
       } as HeadersInit,
       body: JSON.stringify(inputs),
     })
-    switch (getModelKey(model)) {
-      case 'text-to-image':
-        return { response, outputs: (await response.arrayBuffer()) as GetPostProcessedOutputsType<M> }
+
+    switch (response.headers.get('Content-Type')) {
+      case 'text/event-stream':
+        return { response, outputs: response.body } as Run<M>
+      case 'image/png':
+        return { response, outputs: await response.arrayBuffer() } as Run<M>
       default:
-        return { response, outputs: (await response.json()).result as GetPostProcessedOutputsType<M> }
+        return { response, outputs: (await response.json()).result } as Run<M>
     }
   }
 }

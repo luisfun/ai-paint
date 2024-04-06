@@ -1,6 +1,5 @@
 import type { RequestHandler } from './$types'
 import { Gateway } from '$lib/ts/ai-gateway'
-//import { Ai } from '@cloudflare/ai'
 
 export const POST = (async ({ request, platform }) => {
   // shared auth
@@ -20,7 +19,6 @@ export const POST = (async ({ request, platform }) => {
   const lang = body.get('lang') as string | null
   const prompt = (body.get('prompt') as string | null) || ''
   try {
-    //const ai = new Ai(platform?.env?.AI)
     const ai = new Gateway(platform?.env?.AI_GATEWAY_ENDPOINT, platform?.env?.WORKERS_AI_API_TOKEN)
     const image = await generate(
       ai,
@@ -74,7 +72,7 @@ const m2m = async (ai: Gateway, text: string, source_lang: string, target_lang: 
   (await ai.run('@cf/meta/m2m100-1.2b', { text, source_lang, target_lang })).outputs.translated_text || ''
 
 const cookie = (request: Request) =>
-  (request.headers.get('Cookie') || '').split('; ').reduce((res: Record<string, string>, item) => {
+  (request.headers.get('Cookie') || '').split('; ').reduce((res: Record<string, string | undefined>, item) => {
     const data = item.split('=')
     res[data[0]] = data[1]
     return res

@@ -28,6 +28,15 @@ type CacheHeaders = {
   'cf-cache-ttl'?: number
 }
 
+const getModelKey = <M extends ModelName>(model: M) => {
+  const modelKeys = Object.keys(modelMappings) as (keyof ModelMappings)[]
+  for (const key of modelKeys) {
+    // @ts-expect-error
+    if (modelMappings[key].models.includes(model)) return key
+  }
+  return undefined
+}
+
 export class Gateway {
   protected endpoint = ''
   protected token = ''
@@ -51,7 +60,13 @@ export class Gateway {
       } as HeadersInit,
       body: JSON.stringify(inputs),
     })
-    const outputs: GetPostProcessedOutputsType<M> = await response.json()
-    return { response, outputs }
+    switch (getModelKey(model)) {
+      case 'translation':
+        return { response, outputs: (await response.json()).result as GetPostProcessedOutputsType<M> }
+      case 'text-to-image':
+        return { response, outputs: (await response.arrayBuffer()) as GetPostProcessedOutputsType<M> }
+      default:
+        return { response, outputs: (await response.json()) as GetPostProcessedOutputsType<M> }
+    }
   }
 }

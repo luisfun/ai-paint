@@ -2,6 +2,7 @@ import { modelMappings } from '@cloudflare/ai'
 
 /*****************************************************************************/
 // @cloudflare/ai https://www.npmjs.com/package/@cloudflare/ai
+
 type ModelMappings = typeof modelMappings
 // prettier-ignore
 type GetModelName<T> = {
@@ -23,6 +24,7 @@ type GetModelClassType<M extends ModelName> = {
 }[keyof ModelMappings]
 type GetModelInstanceType<M extends ModelName> = InstanceType<GetModelClassType<M>>
 type GetPostProcessedOutputsType<M extends ModelName> = GetModelInstanceType<M>['postProcessedOutputs']
+
 /*****************************************************************************/
 
 type CacheHeaders = {

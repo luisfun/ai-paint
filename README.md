@@ -1,6 +1,6 @@
 # AI Paint [![license](https://img.shields.io/github/license/luisfun/ai-paint)](https://github.com/LuisFun/ai-paint/blob/main/LICENSE)
 
-[👉 Demo](https://ai-paint.luis.fun)
+[👉 Web Site](https://ai-paint.luis.fun)
 
 ## Fork, Clone, Install, Dev
 
@@ -19,15 +19,34 @@ npm run dev
 
 [Cloudflare Pages](https://developers.cloudflare.com/pages/get-started/git-integration/)
 
-Binding to Functions, etc.  
-`Cloudflare Dashboard` > `Workers & Pages` > `ai-paint` > `Settings` > `Functions`
+Add Environment variables.  
+[`Workers & Pages`](https://dash.cloudflare.com/?to=/:account/workers-and-pages) > `ai-paint` > `Settings` > `Environment variables`
+
+```
+AI_GATEWAY_ENDPOINT = ...
+WORKERS_AI_API_TOKEN = ... // secret
+TURNSTILE_SECRET = ... // secret
+```
+
+## Setup AI Gateway
+
+[Creat AI Gateway](https://developers.cloudflare.com/ai-gateway/get-started/creating-gateway/)
+
+Get API Endpoint  
+[`AI Gateway`](https://dash.cloudflare.com/?to=/:ai/ai-gateway/settings) > `AI Paint API Endpoint` > Select `Workers AI`
+
+Set Caching and Rate-limiting  
+[`AI Gateway`](https://dash.cloudflare.com/?to=/:ai/ai-gateway/settings)
+
+[Creat API Token](https://dash.cloudflare.com/profile/api-tokens)  
+Select template `Workers AI`
 
 ## Setup Turnstile
 
 [Key issuance and WAF setup](https://blog.cloudflare.com/integrating-turnstile-with-the-cloudflare-waf-to-challenge-fetch-requests)
 
 Use the Access policy to restrict access to development previews.  
-`Cloudflare Dashboard` > `Workers & Pages` > `ai-paint` > `Manage` > `Access policy` > `Enable access policy`
+[`Workers & Pages`](https://dash.cloudflare.com/?to=/:account/workers-and-pages) > `ai-paint` > `Manage` > `Access policy` > `Enable access policy`
 
 Redirect access to ai-paint.pages.dev using Bulk Redirects.  
-`Bulk Redirects` > ...
+[`Bulk Redirects`](https://dash.cloudflare.com/?to=/:account/bulk-redirects) > ...

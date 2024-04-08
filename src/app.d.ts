@@ -8,8 +8,6 @@ declare global {
     // interface PageState {}
     interface Platform {
       env?: {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        AI: any
         AuthKV: KVNamespace
         TURNSTILE_SECRET: string
         AI_GATEWAY_ENDPOINT: string

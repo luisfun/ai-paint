@@ -1,3 +1,4 @@
+<!-- https://blog.cloudflare.com/integrating-turnstile-with-the-cloudflare-waf-to-challenge-fetch-requests -->
 <script lang="ts">
   import { onMount } from 'svelte'
 

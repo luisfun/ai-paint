@@ -51,7 +51,7 @@
     else fileUrl = recreateURL(fileUrl, file)
   }
   const insertBlob = () => {
-    if (resImg && resImgUrl) {
+    if (resImg) {
       file = new Blob([resImg])
       fileUrl = recreateURL(fileUrl, file)
     }
@@ -92,8 +92,10 @@
     <div class="w-64 max-w-full">
       <p class="text-center">{mode}</p>
       <hr />
+      <!--
       <p>Steps: {steps}</p>
       <input type="range" max="20" bind:value={steps} disabled />
+      -->
       <p>Strength: {strength}</p>
       <input type="range" max="1" step=".05" bind:value={strength} />
       <p>Guidance: {guidance}</p>
@@ -146,13 +148,13 @@
   {/if}
 </div>
 <form class="input-group input-group-divider grid-cols-[auto_1fr_auto] mt-4 mx-auto" on:submit|preventDefault={submit}>
-  <select bind:value={lang} aria-label="Gelect Language">
+  <select class="cursor-pointer" bind:value={lang} aria-label="Gelect Language">
     {#each languages as la}
       <option value={la}>{la.slice(0, 2).toUpperCase()}</option>
     {/each}
   </select>
   <input type="text" placeholder="Prompt" bind:value={prompt} />
-  <button type="submit" class="input-group-shim bg-inherit" aria-label="Generate">
+  <button type="submit" class="input-group-shim bg-inherit" aria-label="Generate" disabled={!prompt}>
     <Svg icon="paint" />
   </button>
 </form>

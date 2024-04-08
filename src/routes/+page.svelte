@@ -98,8 +98,10 @@
       -->
       <p>Strength: {strength}</p>
       <input type="range" max="1" step=".05" bind:value={strength} />
+      <!--
       <p>Guidance: {guidance}</p>
       <input type="range" max="15" step=".5" bind:value={guidance} />
+      -->
     </div>
   {:else if tab === 1}
     <div class="w-full h-2/3 flex-center">
@@ -161,9 +163,11 @@
 <div class="mb-4 flex justify-center">
   <RadioGroup active="variant-filled-surface" border="">
     {#each tabIcons as icon, i}
-      <RadioItem name="tab" label={icon} bind:group={tab} value={i} disabled={i === 2 && !file}>
-        <div class="w-4 h-4 flex-center"><Svg {icon} /></div>
-      </RadioItem>
+      {#if !((i === 0 || i === 2) && !file)}
+        <RadioItem name="tab" label={icon} bind:group={tab} value={i} disabled={(i === 0 || i === 2) && !file}>
+          <div class="w-4 h-4 flex-center"><Svg {icon} /></div>
+        </RadioItem>
+      {/if}
     {/each}
   </RadioGroup>
 </div>

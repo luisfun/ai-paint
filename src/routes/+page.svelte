@@ -26,7 +26,7 @@
 
   let tab = 3
   let steps = 0
-  let strength = 0.95
+  let strength = 1
   let guidance = 7.5
   let file: Blob | null = null
   let mask: Blob | null = null

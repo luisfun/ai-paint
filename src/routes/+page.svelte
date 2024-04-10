@@ -28,8 +28,7 @@
   let steps = 0
   let strength = 1
   let guidance = 7.5
-  let file: File | Blob | undefined = undefined
-  let fileUrl: string = ''
+  let file: Blob | null = null
   let mask: Blob | null = null
   let lang = languages[0]
   let prompt = ''
@@ -83,8 +82,8 @@
       <input type="range" max="15" step=".5" bind:value={guidance} />
       -->
   </div>
-  <Upload display={tab === 1} bind:file bind:fileUrl {resImg} />
-  <Mask display={tab === 2} bind:mask {fileUrl} />
+  <Upload display={tab === 1} bind:file {resImg} />
+  <Mask display={tab === 2} bind:mask {file} />
   <Result display={tab === 3} {resImg} {error} {loading} />
 </div>
 <form class="input-group input-group-divider grid-cols-[auto_1fr_auto] mt-4 mx-auto" on:submit|preventDefault={submit}>

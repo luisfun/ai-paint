@@ -1,16 +1,16 @@
 <script lang="ts">
   import { ProgressRadial } from '@skeletonlabs/skeleton'
   import Svg from '$lib/svelte/Svg.svelte'
-  import { recreateURL } from '$lib/ts/recreate-url'
+  import { recreateURL } from '$lib/ts/utils'
 
   export let display: boolean
   export let resImg: Blob | undefined
   export let error: number
   export let loading: boolean
   $: if (resImg) resImgUrl = recreateURL(resImgUrl, resImg)
-     else resImgUrl = recreateURL(resImgUrl, "")
+  else resImgUrl = recreateURL(resImgUrl, '')
 
-  let resImgUrl = ""
+  let resImgUrl = ''
 </script>
 
 <div class="relative w-full h-full flex-col justify-center items-center {display ? 'flex' : 'hidden'}">

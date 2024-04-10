@@ -1,13 +1,17 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import Svg from '$lib/svelte/Svg.svelte'
+  import { getBlob, recreateURL } from '$lib/ts/utils'
 
   const color = '#fff'
   const lineWidth = 32
 
   export let display: boolean
   export let mask: Blob | null // bind
-  export let fileUrl: string
+  export let file: Blob | null
+  let fileUrl: string = ''
+  $: if (file) fileUrl = recreateURL(fileUrl, file)
+  else fileUrl = recreateURL(fileUrl, '')
   $: if (fileUrl !== '') {
     const image = new Image()
     image.onload = () => {
@@ -40,7 +44,7 @@
     ctx.strokeStyle = color
     ctx.lineWidth = lineWidth * scale
     ctx.lineCap = 'round'
-    ctx.lineJoin = "round"
+    ctx.lineJoin = 'round'
     ctx.beginPath()
     ctx.moveTo(e.offsetX * scale, e.offsetY * scale)
     ctx.lineTo(e.offsetX * scale, e.offsetY * scale)
@@ -62,13 +66,11 @@
   }
   const canvasClear = () => {
     if (ctx) {
-      ctx.fillStyle = "#000"
+      ctx.fillStyle = '#000'
       ctx.fillRect(0, 0, dom.width, dom.height)
     }
     mask = null
   }
-  const getBlob = (canvas: HTMLCanvasElement, type?: string, quality?: number) =>
-    new Promise((resolve: (value: Blob | null) => void) => canvas.toBlob(resolve, type, quality))
 </script>
 
 <div class="relative w-full h-full {display ? 'block' : 'hidden'}">
@@ -80,7 +82,7 @@
     </p>
   </div>
   <canvas
-    class="absolute w-full h-full touch-none {mask ? "opacity-50" : "opacity-0"}"
+    class="absolute w-full h-full touch-none {mask ? 'opacity-50' : 'opacity-0'}"
     bind:this={dom}
     on:pointerdown={pointerDown}
     on:pointerup={pointerUp}

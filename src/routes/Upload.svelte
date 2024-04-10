@@ -49,7 +49,8 @@
       const imgWH = [image.width, image.height]
       const isVertical = dom.width / dom.height > imgWH[0] / imgWH[1]
       const baseScale = isVertical ? dom.width / imgWH[0] : dom.height / imgWH[1]
-      const scale = baseScale * range
+      const r1 = range - 1
+      const scale = baseScale * (r1 * r1 + 1)
       const canvasScale = dom.clientWidth === 0 ? 1 : dom.clientWidth / dom.width
       const moveXY = [dx / scale / canvasScale, dy / scale / canvasScale]
       const oldCenter = center ? center : [imgWH[0] / 2, imgWH[1] / 2]
@@ -114,10 +115,10 @@
     on:pointerup={pointerUp}
     on:pointermove={pointerMove}
   />
-  <div class="{!file ? 'flex' : 'hidden'} flex-col justify-center items-center w-full h-full">
+  <div class="{!file ? 'flex' : 'hidden'} flex-col justify-center items-center h-full mx-6">
     <button
       type="button"
-      class="{!file && resImg ? 'block' : 'hidden'} btn variant-filled-surface"
+      class="{!file && resImg ? 'flex' : 'hidden'} btn variant-filled-surface mb-6"
       on:click={() => imageUpdate(resImg)}
     >
       <div class="inline-block w-4 h-4 mr-2 flex-center"><Svg icon="file-arrow-up" /></div>
@@ -131,13 +132,13 @@
     </FileDropzone>
   </div>
   <div class="absolute right-0 left-0 bottom-0 h-[43px] flex-center">
-    <div class="w-52 h-[43px] flex-center variant-filled-surface rounded-full {file ? "opacity-100" : "opacity-50"}">
+    <div class="w-52 h-[43px] flex-center variant-filled-surface rounded-full {file ? 'opacity-100' : 'opacity-50'}">
       <input
         type="range"
         class="w-32 scale-150"
         min="1"
-        max="2"
-        step=".05"
+        max="2.5"
+        step=".01"
         disabled={!file}
         bind:value={range}
         on:change={handleRange}

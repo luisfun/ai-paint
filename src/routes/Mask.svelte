@@ -2,7 +2,7 @@
   import { onMount } from 'svelte'
   import Svg from '$lib/svelte/Svg.svelte'
 
-  const color = 'rgba(0, 255, 0, 1)'
+  const color = '#fff'
   const lineWidth = 32
 
   export let display: boolean
@@ -15,6 +15,7 @@
       const wh = isVertical ? image.width : image.height
       dom.width = wh
       dom.height = wh
+      canvasClear()
     }
     image.src = fileUrl
   } else {
@@ -39,6 +40,7 @@
     ctx.strokeStyle = color
     ctx.lineWidth = lineWidth * scale
     ctx.lineCap = 'round'
+    ctx.lineJoin = "round"
     ctx.beginPath()
     ctx.moveTo(e.offsetX * scale, e.offsetY * scale)
     ctx.lineTo(e.offsetX * scale, e.offsetY * scale)
@@ -59,7 +61,10 @@
     ctx.stroke()
   }
   const canvasClear = () => {
-    ctx?.clearRect(0, 0, dom.width, dom.height)
+    if (ctx) {
+      ctx.fillStyle = "#000"
+      ctx.fillRect(0, 0, dom.width, dom.height)
+    }
     mask = null
   }
   const getBlob = (canvas: HTMLCanvasElement, type?: string, quality?: number) =>
@@ -75,7 +80,7 @@
     </p>
   </div>
   <canvas
-    class="absolute w-full h-full opacity-75 touch-none"
+    class="absolute w-full h-full touch-none {mask ? "opacity-50" : "opacity-0"}"
     bind:this={dom}
     on:pointerdown={pointerDown}
     on:pointerup={pointerUp}

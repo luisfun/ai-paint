@@ -1,11 +1,13 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { FileDropzone, ProgressRadial, RadioGroup, RadioItem } from '@skeletonlabs/skeleton'
+  import { RadioGroup, RadioItem } from '@skeletonlabs/skeleton'
   import Svg from '$lib/svelte/Svg.svelte'
   import AdSense from '$lib/svelte/AdSense.svelte'
   import Turnstile from '$lib/svelte/Turnstile.svelte'
   import { adsense, turnstileSitekey } from '$lib/config'
-  import { recreateURL } from '$lib/ts/recreate-url'
+  import Upload from './Upload.svelte'
+  import Mask from './Mask.svelte'
+  import Result from './Result.svelte'
 
   onMount(() => {
     const url = new URL(window.location.toString())
@@ -27,12 +29,11 @@
   let strength = 1
   let guidance = 7.5
   let file: File | Blob | undefined = undefined
-  let fileUrl = ''
-  let mask: Blob | undefined = undefined
+  let fileUrl: string = ''
+  let mask: Blob | null = null
   let lang = languages[0]
   let prompt = ''
   let resImg: Blob | undefined = undefined
-  let resImgUrl = ''
   let mode = 'Text to Image'
   let loading = false
   let error = 200
@@ -42,24 +43,6 @@
   $: !file ? (mode = 'Text to Image') :
      !mask ? (mode = 'Image to Image') :
      (mode = 'Inpainting')
-
-  const uploadFile = (event: Event) => {
-    const target = event.target as HTMLInputElement
-    file = target.files?.[0]
-    target.value = ''
-    if (!file) fileUrl = recreateURL(fileUrl, '')
-    else fileUrl = recreateURL(fileUrl, file)
-  }
-  const insertBlob = () => {
-    if (resImg) {
-      file = new Blob([resImg])
-      fileUrl = recreateURL(fileUrl, file)
-    }
-  }
-  const deleteFile = () => {
-    file = undefined
-    fileUrl = recreateURL(fileUrl, '')
-  }
 
   const submit = async () => {
     if (loading) return null
@@ -77,10 +60,8 @@
     body.append('prompt', prompt)
     const res = await fetch('/api/image', { method: 'POST', body })
     error = res.status
-    if (res.ok) {
-      resImg = await res.blob()
-      resImgUrl = recreateURL(resImgUrl, resImg)
-    } else resImgUrl = recreateURL(resImgUrl, '')
+    if (res.ok) resImg = await res.blob()
+    else resImg = undefined
     tab = 3
     loading = false
     if (res.headers.get('X-Auth') !== 'true') adDisplay = true
@@ -88,66 +69,23 @@
 </script>
 
 <div class="relative w-[512px] aspect-square max-w-full my-4 mx-auto flex-center">
-  {#if tab === 0}
-    <div class="w-64 max-w-full">
-      <p class="text-center">{mode}</p>
-      <hr />
-      <!--
+  <div class="w-64 max-w-full {tab === 0 ? 'block' : 'hidden'}">
+    <p class="text-center">{mode}</p>
+    <hr />
+    <!--
       <p>Steps: {steps}</p>
       <input type="range" max="20" bind:value={steps} disabled />
       -->
-      <p>Strength: {strength}</p>
-      <input type="range" max="1" step=".05" bind:value={strength} />
-      <!--
+    <p>Strength: {strength}</p>
+    <input type="range" max="1" step=".05" bind:value={strength} />
+    <!--
       <p>Guidance: {guidance}</p>
       <input type="range" max="15" step=".5" bind:value={guidance} />
       -->
-    </div>
-  {:else if tab === 1}
-    <div class="w-full h-2/3 flex-center">
-      {#if fileUrl}
-        <img src={fileUrl} alt="Upload" />
-      {:else if resImg}
-        <button type="button" class="btn variant-filled-surface" on:click={insertBlob}>
-          <div class="inline-block w-4 h-4 mr-2 flex-center"><Svg icon="file-arrow-up" /></div>
-          Insert result image
-        </button>
-      {/if}
-    </div>
-    <div class="flex w-full h-1/3 pt-4">
-      <FileDropzone name="files" on:change={uploadFile}>
-        <svelte:fragment slot="lead">
-          <div class="w-8 h-8 mx-auto flex-center"><Svg icon="file-arrow-up" /></div>
-        </svelte:fragment>
-        <svelte:fragment slot="message"><b>Upload a file</b> or drag and drop</svelte:fragment>
-      </FileDropzone>
-      <button
-        type="button"
-        class="btn-icon variant-filled-surface ml-4 mt-auto p-2"
-        disabled={!file}
-        on:click={deleteFile}
-      >
-        <Svg icon="trash-can" />
-      </button>
-    </div>
-  {:else if tab === 2}
-    <div />
-  {:else if tab === 3}
-    {#if resImgUrl}
-      <img class={loading ? 'opacity-50' : ''} src={resImgUrl} alt="Generated" />
-    {:else if error !== 200}
-      <b>Error: {error}</b>
-      <p>Please try to generate it again</p>
-    {:else if !loading}
-      <p>Type Prompt and Enter</p>
-      <div class="w-4 h-4"><Svg icon="angles-down" /></div>
-    {/if}
-    {#if loading}
-      <div class="absolute inset-0 flex-center">
-        <ProgressRadial stroke={60} meter="stroke-primary-500" track="stroke-primary-500/30" />
-      </div>
-    {/if}
-  {/if}
+  </div>
+  <Upload display={tab === 1} bind:file bind:fileUrl {resImg} />
+  <Mask display={tab === 2} bind:mask {fileUrl} />
+  <Result display={tab === 3} {resImg} {error} {loading} />
 </div>
 <form class="input-group input-group-divider grid-cols-[auto_1fr_auto] mt-4 mx-auto" on:submit|preventDefault={submit}>
   <select class="cursor-pointer" bind:value={lang} aria-label="Gelect Language">

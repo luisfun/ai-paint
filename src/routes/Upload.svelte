@@ -84,8 +84,8 @@
       image.onload = async () => {
         if (!image) throw new Error('no image')
         const wh = image.height > image.width ? image.width : image.height
-        dom.width = wh
-        dom.height = wh
+        dom.width = wh < 512 ? wh : 512
+        dom.height = wh < 512 ? wh : 512
         draw()
         file = await getBlob(dom, undefined, 1)
         URL.revokeObjectURL(image.src)
@@ -109,7 +109,7 @@
 
 <div class="relative w-full h-full {display ? 'block' : 'hidden'}">
   <canvas
-    class="{file ? 'block' : 'hidden'} max-w-full w-full touch-none"
+    class="{file ? 'block' : 'hidden'} max-w-full w-full touch-none cursor-grab active:cursor-grabbing"
     bind:this={dom}
     on:pointerdown={pointerDown}
     on:pointerup={pointerUp}
@@ -135,7 +135,7 @@
     <div class="w-52 h-[43px] flex-center variant-filled-surface rounded-full {file ? 'opacity-100' : 'opacity-50'}">
       <input
         type="range"
-        class="w-32 scale-150"
+        class="w-32 scale-150 cursor-pointer disabled:cursor-not-allowed"
         min="1"
         max="2.5"
         step=".01"

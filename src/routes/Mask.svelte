@@ -82,7 +82,7 @@
     </p>
   </div>
   <canvas
-    class="absolute w-full h-full touch-none {mask ? 'opacity-50' : 'opacity-0'}"
+    class="absolute w-full h-full touch-none cursor-crosshair {mask ? 'opacity-50' : 'opacity-0'}"
     bind:this={dom}
     on:pointerdown={pointerDown}
     on:pointerup={pointerUp}

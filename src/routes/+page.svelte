@@ -76,7 +76,7 @@
       <input type="range" max="20" bind:value={steps} disabled />
       -->
     <p>Strength: {strength}</p>
-    <input type="range" max="1" step=".05" bind:value={strength} />
+    <input type="range" class="cursor-pointer" max="1" step=".05" bind:value={strength} />
     <!--
       <p>Guidance: {guidance}</p>
       <input type="range" max="15" step=".5" bind:value={guidance} />

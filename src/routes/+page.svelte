@@ -18,7 +18,10 @@
       history.replaceState({}, '', url)
     }
     const navLang = window.navigator.language.split('-')[0]
-    if (navLang && navLang.slice(0, 2).toLocaleLowerCase() !== 'en') languages = [...languages, navLang]
+    if (navLang && navLang.slice(0, 2).toLocaleLowerCase() !== 'en') {
+      languages = [...languages, navLang]
+      lang = navLang
+    }
   })
 
   const tabIcons = ['adjustments-horizontal', 'file-arrow-up', 'crop-simple', 'image'] as const

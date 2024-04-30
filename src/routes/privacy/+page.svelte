@@ -96,7 +96,7 @@
 
 <h2>Other</h2>
 <p>
-  The source code of the site is published on <NewTab href="https://github.com/LuisFun/ai-paint" label="Github"
+  The source code of the site is published on <NewTab href="https://github.com/luisfun/ai-paint" label="Github"
     >GitHub</NewTab
   >.
 </p>

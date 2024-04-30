@@ -1,4 +1,4 @@
-# AI Paint [![license](https://img.shields.io/github/license/luisfun/ai-paint)](https://github.com/LuisFun/ai-paint/blob/main/LICENSE)
+# AI Paint [![license](https://img.shields.io/github/license/luisfun/ai-paint)](https://github.com/luisfun/ai-paint/blob/main/LICENSE)
 
 [👉 Web Site](https://ai-paint.luis.fun)
 

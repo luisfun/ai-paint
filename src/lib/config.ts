@@ -19,7 +19,7 @@ export const site = {
 }
 
 export const adsense = {
-  display: false, // true, // Stop ads during the Cloudflare AI Challenge.
+  display: true,
   client: '5106375978729065',
   slot: '3405470619',
 }

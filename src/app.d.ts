@@ -9,8 +9,8 @@ declare global {
     interface Platform {
       env?: {
         AuthKV: KVNamespace
+        ACCOUNT_ID: string
         TURNSTILE_SECRET: string
-        AI_GATEWAY_ENDPOINT: string
         WORKERS_AI_API_TOKEN: string
       }
     }

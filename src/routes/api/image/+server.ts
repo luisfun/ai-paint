@@ -1,5 +1,5 @@
 import type { RequestHandler } from './$types'
-import { Ai } from '@luisfun/cloudflare-ai-plugin'
+import { Ai, gatewayUrl } from '@luisfun/cloudflare-ai-plugin'
 
 export const POST = (async ({ request, platform }) => {
   // shared auth
@@ -19,10 +19,18 @@ export const POST = (async ({ request, platform }) => {
   const lang = body.get('lang') as string | null
   const prompt = (body.get('prompt') as string | null) || ''
   try {
-    const ai = new Ai(platform?.env?.AI_GATEWAY_ENDPOINT, platform?.env?.WORKERS_AI_API_TOKEN)
+    const enPrompt =
+      prompt && lang && lang !== 'en'
+        ? await m2m(
+            new Ai(gatewayUrl(platform?.env?.ACCOUNT_ID, 'global'), platform?.env?.WORKERS_AI_API_TOKEN),
+            prompt,
+            lang,
+            'en',
+          )
+        : prompt
     const image = await generate(
-      ai,
-      prompt && lang && lang !== 'en' ? await m2m(ai, prompt, lang, 'en') : prompt,
+      new Ai(gatewayUrl(platform?.env?.ACCOUNT_ID, 'ai-paint'), platform?.env?.WORKERS_AI_API_TOKEN),
+      enPrompt,
       file ? [...new Uint8Array(await file.arrayBuffer())] : undefined,
       mask ? [...new Uint8Array(await mask.arrayBuffer())] : undefined,
       steps,

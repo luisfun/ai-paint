@@ -34,6 +34,6 @@
     "vite-plugin-tailwind-purgecss": "0.3.3"
   },
   "dependencies": {
-    "@luisfun/cloudflare-ai-plugin": "^0.2.2"
+    "@luisfun/cloudflare-ai-plugin": "^0.2.3"
   }
 }

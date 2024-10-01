@@ -80,8 +80,8 @@ const generate = async (
       { prompt },
       { 'cf-cache-ttl': 60, 'cf-skip-cache': true },
     )
-    const json = await res.response.json()
-    return json.result.image as string
+    const base64Str = (await res.response.json()).result.image as string
+    return (await fetch(`data:image/jpeg;base64,` + base64Str)).body
   }
   return ai.run(
     model,

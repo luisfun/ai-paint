@@ -37,13 +37,6 @@ export const POST = (async ({ request, platform }) => {
       strength,
       guidance,
     )
-    if (!file)
-      return new Response(image, {
-        headers: {
-          'content-type': 'text/plain',
-          'X-Auth': xAuth,
-        },
-      })
     return new Response(image, {
       headers: {
         'content-type': 'image/png',
@@ -75,21 +68,11 @@ const generate = async (
 ) => {
   // prettier-ignore
   const model =
-    !image ? '@cf/black-forest-labs/flux-1-schnell' :
+    !image ? '@cf/stabilityai/stable-diffusion-xl-base-1.0' :
      image && !mask ? '@cf/runwayml/stable-diffusion-v1-5-img2img' :
      image &&  mask ? '@cf/runwayml/stable-diffusion-v1-5-inpainting' :
     '@cf/stabilityai/stable-diffusion-xl-base-1.0'
   const num_steps = !steps || steps === 0 ? 20 : steps
-  if (model === '@cf/black-forest-labs/flux-1-schnell') {
-    const res = await ai.fetch(
-      // @ts-expect-error
-      model,
-      { prompt },
-      { 'cf-cache-ttl': 60, 'cf-skip-cache': true },
-    )
-    console.log(await res.response.json())
-    return (await res.response.json()).result.image as string
-  }
   return ai.run(
     model,
     { prompt, num_steps, image, mask, strength, guidance },

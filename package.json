@@ -35,8 +35,5 @@
   },
   "dependencies": {
     "@luisfun/cloudflare-ai-plugin": "^0.2.4"
-  },
-  "engines": {
-    "node": "20.x"
   }
 }

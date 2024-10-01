@@ -73,11 +73,13 @@ const generate = (
      image && !mask ? '@cf/runwayml/stable-diffusion-v1-5-img2img' :
      image &&  mask ? '@cf/runwayml/stable-diffusion-v1-5-inpainting' :
     '@cf/stabilityai/stable-diffusion-xl-base-1.0'
-  const num_steps = !steps || steps === 0 ? (model === '@cf/black-forest-labs/flux-1-schnell' ? 4 : 20) : steps
+  const num_steps = !steps || steps === 0 ? 20 : steps
   return ai.run(
     // @ts-expect-error
     model,
-    { prompt, num_steps, image, mask, strength, guidance },
+    model === '@cf/black-forest-labs/flux-1-schnell'
+      ? { prompt }
+      : { prompt, num_steps, image, mask, strength, guidance },
     { 'cf-cache-ttl': 60, 'cf-skip-cache': true },
   )
 }

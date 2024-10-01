@@ -4,7 +4,7 @@
   import { recreateURL } from '$lib/ts/utils'
 
   export let display: boolean
-  export let resImg: Blob | undefined
+  export let resImg: Blob | string | undefined
   export let error: number
   export let loading: boolean
   $: if (resImg) resImgUrl = recreateURL(resImgUrl, resImg)

@@ -37,6 +37,13 @@ export const POST = (async ({ request, platform }) => {
       strength,
       guidance,
     )
+    if (!file)
+      return new Response(image, {
+        headers: {
+          'content-type': 'text/plain',
+          'X-Auth': xAuth,
+        },
+      })
     return new Response(image, {
       headers: {
         'content-type': 'image/png',
@@ -80,8 +87,7 @@ const generate = async (
       { prompt },
       { 'cf-cache-ttl': 60, 'cf-skip-cache': true },
     )
-    const base64Str = (await res.response.json()).result.image as string
-    return (await fetch(`data:image/jpeg;base64,` + base64Str)).body
+    return (await res.response.json()).result.image as string
   }
   return ai.run(
     model,

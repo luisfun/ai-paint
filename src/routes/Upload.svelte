@@ -6,7 +6,7 @@
 
   export let display: boolean
   export let file: File | Blob | null // bind
-  export let resImg: Blob | undefined
+  export let resImg: Blob | string | undefined
 
   let dom: HTMLCanvasElement
   let ctx: CanvasRenderingContext2D | null = null
@@ -77,7 +77,7 @@
     }
   }
 
-  const imageUpdate = (obj: Blob | MediaSource | undefined) => {
+  const imageUpdate = (obj: Blob | MediaSource | string | undefined) => {
     if (!obj) deleteFile()
     else {
       image = new Image()
@@ -90,7 +90,8 @@
         file = await getBlob(dom, undefined, 1)
         URL.revokeObjectURL(image.src)
       }
-      image.src = URL.createObjectURL(obj)
+      if (typeof obj === 'string') image.src = obj
+      else image.src = URL.createObjectURL(obj)
     }
   }
   const uploadFile = (e: Event) => {

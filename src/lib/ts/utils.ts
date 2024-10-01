@@ -1,4 +1,5 @@
-export const recreateURL = (url: string, obj: Blob | MediaSource | '') => {
+export const recreateURL = (url: string, obj: Blob | MediaSource | string) => {
+  if (typeof obj === 'string' && obj !== '') return obj
   if (url) URL.revokeObjectURL(url)
   if (obj === '') return obj
   else return URL.createObjectURL(obj)

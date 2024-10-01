@@ -35,7 +35,7 @@
   let mask: Blob | null = null
   let lang = languages[0]
   let prompt = ''
-  let resImg: Blob | undefined = undefined
+  let resImg: Blob | string | undefined = undefined
   let mode = 'Text to Image'
   let loading = false
   let error = 200
@@ -62,8 +62,10 @@
     body.append('prompt', prompt)
     const res = await fetch('/api/image', { method: 'POST', body })
     error = res.status
-    if (res.ok) resImg = await res.blob()
-    else resImg = undefined
+    if (res.ok) {
+      if (res.headers.get('content-type') === 'text/plain') resImg = `data:image/jpeg;base64,${await res.text()}`
+      else resImg = await res.blob()
+    } else resImg = undefined
     tab = 3
     loading = false
     if (res.headers.get('X-Auth') !== 'true') adDisplay = true

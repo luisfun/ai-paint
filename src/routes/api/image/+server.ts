@@ -87,6 +87,7 @@ const generate = async (
       { prompt },
       { 'cf-cache-ttl': 60, 'cf-skip-cache': true },
     )
+    console.log(await res.response.json())
     return (await res.response.json()).result.image as string
   }
   return ai.run(

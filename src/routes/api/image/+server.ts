@@ -37,7 +37,6 @@ export const POST = (async ({ request, platform }) => {
       strength,
       guidance,
     )
-    // @ts-expect-error
     return new Response(image, {
       headers: {
         'content-type': 'image/png',
@@ -58,7 +57,7 @@ export const fallback = (({ request }) => {
   return new Response(`I caught your ${request.method} request.`, { status: 405 })
 }) satisfies RequestHandler
 
-const generate = (
+const generate = async (
   ai: Ai,
   prompt: string,
   image?: number[],
@@ -74,12 +73,19 @@ const generate = (
      image &&  mask ? '@cf/runwayml/stable-diffusion-v1-5-inpainting' :
     '@cf/stabilityai/stable-diffusion-xl-base-1.0'
   const num_steps = !steps || steps === 0 ? 20 : steps
+  if (model === '@cf/black-forest-labs/flux-1-schnell') {
+    const res = await ai.fetch(
+      // @ts-expect-error
+      model,
+      { prompt },
+      { 'cf-cache-ttl': 60, 'cf-skip-cache': true },
+    )
+    const json = await res.response.json()
+    return json.result.image as string
+  }
   return ai.run(
-    // @ts-expect-error
     model,
-    model === '@cf/black-forest-labs/flux-1-schnell'
-      ? { prompt }
-      : { prompt, num_steps, image, mask, strength, guidance },
+    { prompt, num_steps, image, mask, strength, guidance },
     { 'cf-cache-ttl': 60, 'cf-skip-cache': true },
   )
 }
